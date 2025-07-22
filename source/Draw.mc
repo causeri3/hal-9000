@@ -89,7 +89,19 @@ class Fields{
         return value1 + value2 + value3;
     }
 
+    function extendString(fieldsString as String) as String {
+        var missingChars = 17 - fieldsString.length();
+        if (missingChars == 0){
+            return fieldsString;
+            }
+        var spaces = "";
+        for (var i = 0; i < (missingChars/2); i += 1) {
+            spaces += " ";
+            }
+        return spaces + fieldsString + spaces;
+        }
 
+/*
     function drawTest(dc as Dc) as Void {
         dc.setColor(0xff0000, Graphics.COLOR_TRANSPARENT);
 
@@ -109,6 +121,32 @@ class Fields{
         }
 
     }
+    */
+
+    function drawFieldsString(dc as Dc) as Void {
+
+        var fieldsString = getFieldsString();
+        Log.debug(fieldsString);
+
+        dc.setColor(0xff0000, Graphics.COLOR_TRANSPARENT);
+
+        for (var i = 0; i < angles.size(); i += 1) {
+            var mirrored_i = i <= 8 ? i : (16 - i);
+            var correction = mirrored_i * (angle_step_size * (font_size / 180));
+            var angle = angles[i];
+            var radians = angle * Math.PI / 180.0;
+            var x = cx + (r - correction) * Math.sin(radians);
+            var y = cx + (r - correction) * Math.cos(radians);
+            var font = fonts[i];
+            // reverse string
+            var char = fieldsString.substring(fieldsString.length() - 1 - i, fieldsString.length() - i);
+            if (char.equals(" ") || char.equals("•")){
+                font = Graphics.FONT_TINY;
+            }
+            dc.drawText(x, y, font, char, Graphics.TEXT_JUSTIFY_CENTER);
+        }
+    }
+
 
     // function drawHeart(dc as Dc) as Void {
 
@@ -158,7 +196,7 @@ class Fields{
         dc.fillRectangle(_x + 1, _y + 1, fillWidth, h_body - 2);
     }
     
-    function getFieldsString(dc as Dc) {
+    function getFieldsString() {
         var field1SettingString = Settings.getFieldString(Settings.SettingField1);
         var field1Value = choose_field(field1SettingString);
         var field2SettingString = Settings.getFieldString(Settings.SettingField2);
@@ -166,7 +204,11 @@ class Fields{
         var field3SettingString = Settings.getFieldString(Settings.SettingField3);
         var field3Value = choose_field(field3SettingString);
 
-        var fieldsString = addSeperator(field1Value, field2Value, field3Value);
+        var fieldsString = extendString(addSeperator(field1Value, field2Value, field3Value));
+        fieldsString = extendString(fieldsString);
+        return fieldsString;
+
+
         //dc.drawText(0.55*width, .045*height, Graphics.FONT_TINY, fieldsString, Graphics.TEXT_JUSTIFY_CENTER);
     }
         
@@ -218,8 +260,8 @@ class Fields{
     }
 
     function update_fields(dc as Dc) as Void{
-        drawTest(dc);
-        getFieldsString(dc);
+        drawFieldsString(dc);
+        //getFieldsString(dc);
         // drawSmoke(dc);
         // drawHeart(dc);
         // drawCup(dc);
