@@ -52,4 +52,8 @@
     <settingConfig type="boolean" required="true"/>
   </setting>
 
+    <setting propertyKey="@Properties.batterySetting" title="@Strings.batterySetting">
+    <settingConfig type="boolean" required="true"/>
+  </setting>
+
 </settings>

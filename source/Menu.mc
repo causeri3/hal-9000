@@ -58,6 +58,14 @@ class Menu extends WatchUi.Menu2 {
              {}                                                                                                       
          )                                                                                                            
      ); 
+         Menu2.addItem(                                                                                                   
+         new MenuItem(                                                                                                
+             Rez.Strings.batterySetting,                                                              
+             Settings.batterySetting ? Rez.Strings.on : Rez.Strings.off,                     
+             "batterySetting",                                                                                      
+             {}                                                                                                       
+         )                                                                                                            
+     ); 
   }                                                                                                       
 }
 
@@ -87,6 +95,9 @@ class MenuDelegate extends WatchUi.Menu2InputDelegate {
      }
     else if (id.equals("animationSetting")) {                                                                        
        toggleAnimation(item);                                                                                         
+     }
+      else if (id.equals("batterySetting")) {                                                                        
+       toggleBattery(item);                                                                                         
      }      
   }
 
@@ -118,6 +129,13 @@ class MenuDelegate extends WatchUi.Menu2InputDelegate {
      Settings.animationSetting = !Settings.animationSetting;                                                                
      item.setSubLabel(Settings.animationSetting ? Rez.Strings.on : Rez.Strings.off);                                     
      Application.Properties.setValue("animationSetting", Settings.animationSetting);                                        
+     Settings.getProperties();
+     }
+     
+  hidden function toggleBattery(item){                                                                             
+     Settings.batterySetting = !Settings.batterySetting;                                                                
+     item.setSubLabel(Settings.batterySetting ? Rez.Strings.on : Rez.Strings.off);                                     
+     Application.Properties.setValue("batterySetting", Settings.batterySetting);                                        
      Settings.getProperties();
      }   
 }

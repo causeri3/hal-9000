@@ -215,7 +215,9 @@ class Fields{
         // drawSmoke(dc);
         // drawHeart(dc);
         // drawCup(dc);
-        drawBattery(dc);
+        if (Settings.batterySetting) { 
+            drawBattery(dc);
+        }
     }
 }
 
@@ -223,7 +225,6 @@ class Fields{
 
 /// todo
 // get rid of battery setting
-// what the fuck with teh default values? - no settings available???
 // pad total string, back and front
 // if statement with fonts for bulletpoint and empty space
 // loop over filed strings

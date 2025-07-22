@@ -14,7 +14,8 @@
     <string id="caloriesPerc">Calories Percentage</string>
     <string id="caloriesGoal">Calories Goal</string>
     <string id="bodyThreshold">Body Battery Animation</string>
-    <string id="animationSetting">Animation</string>                                                                   
+    <string id="animationSetting">Animation</string> 
+    <string id="batterySetting">Show Battery</string>                                                                                                                   
     <string id="on">On</string>                                                                                        
     <string id="off">Off</string>  
 </strings>

@@ -9,6 +9,7 @@ module Settings {
     var bodyScoreSetting;
     var caloriesGoal;
     var animationSetting;
+    var batterySetting;
 
 
     function getOrDefault(key, defaultValue, expectedType) {
@@ -27,6 +28,7 @@ module Settings {
         bodyScoreSetting = getOrDefault("bodyThreshold", 50, Lang.Number);
         caloriesGoal = getOrDefault("caloriesGoal", 2000, Lang.Number);
         animationSetting = getOrDefault("animationSetting", true, Lang.Boolean);
+        batterySetting = getOrDefault("batterySetting", true, Lang.Boolean);
     }
 
 
