@@ -59,7 +59,7 @@ class BackgroundAnimation {
         // == doesnt work with strings in Monkey c - Java like
         bodyBattery = bodyBattery.equals("") ? 0 as Number : bodyBattery.toNumber();
 
-        if (bodyBattery < Settings.bodyScoreSetting) {
+        if (bodyBattery > Settings.bodyScoreSetting) {
             stopAnimation();
             // free the previous image to save memory
             currentImage = null;
