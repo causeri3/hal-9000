@@ -1,0 +1,8 @@
+<properties>  
+  <property id="Field1" type="number">1</property>
+  <property id="Field2" type="number">5</property>
+  <property id="Field3" type="number">2</property>
+  <property id="bodyThreshold" type="number">50</property>
+  <property id="caloriesGoal" type="number">2000</property>
+  <property id="animationSetting" type="boolean">true</property>
+</properties>
