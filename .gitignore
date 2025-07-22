@@ -1,0 +1,7 @@
+bin/
+**/.DS_Store
+python-helpers/*
+!python-helpers/*.py
+.aider*
+screenshots/
+scratch
