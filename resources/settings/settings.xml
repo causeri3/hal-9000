@@ -1,0 +1,55 @@
+<settings>
+    <setting propertyKey="@Properties.Field1" title="@Strings.Field1">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.none</listEntry>
+            <listEntry value="1">@Strings.heart</listEntry>
+            <listEntry value="2">@Strings.stress</listEntry>
+            <listEntry value="3">@Strings.calories</listEntry>
+            <listEntry value="4">@Strings.date</listEntry>
+            <listEntry value="5">@Strings.time</listEntry>
+            <listEntry value="6">@Strings.body</listEntry>
+            <listEntry value="7">@Strings.caloriesPerc</listEntry>
+        </settingConfig>
+    </setting>
+
+    <setting propertyKey="@Properties.Field2" title="@Strings.Field2">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.none</listEntry>
+            <listEntry value="1">@Strings.heart</listEntry>
+            <listEntry value="2">@Strings.stress</listEntry>
+            <listEntry value="3">@Strings.calories</listEntry>
+            <listEntry value="4">@Strings.date</listEntry>
+            <listEntry value="5">@Strings.time</listEntry>
+            <listEntry value="6">@Strings.body</listEntry>
+            <listEntry value="7">@Strings.caloriesPerc</listEntry>
+
+        </settingConfig>
+    </setting>
+
+        <setting propertyKey="@Properties.Field3" title="@Strings.Field3">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.none</listEntry>
+            <listEntry value="1">@Strings.heart</listEntry>
+            <listEntry value="2">@Strings.stress</listEntry>
+            <listEntry value="3">@Strings.calories</listEntry>
+            <listEntry value="4">@Strings.date</listEntry>
+            <listEntry value="5">@Strings.time</listEntry>
+            <listEntry value="6">@Strings.body</listEntry>
+            <listEntry value="7">@Strings.caloriesPerc</listEntry>
+
+        </settingConfig>
+    </setting>
+
+    <setting propertyKey="@Properties.caloriesGoal" title="@Strings.caloriesGoal">
+        <settingConfig type="numeric" min="1" max="10000" required="true"/>
+    </setting>
+
+    <setting propertyKey="@Properties.bodyThreshold" title="@Strings.bodyThreshold">
+        <settingConfig type="numeric" min="0" max="100" required="true"/>
+   </setting>
+
+    <setting propertyKey="@Properties.animationSetting" title="@Strings.animationSetting">
+    <settingConfig type="boolean" required="true"/>
+  </setting>
+
+</settings>
