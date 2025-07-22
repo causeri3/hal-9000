@@ -140,7 +140,7 @@ function getCaloriesProgress() {
     if (goal > 0 && calories != null) {
         var progress = calories.toFloat() / goal.toFloat();
 
-        return (progress > 1.0) ? 100 : (progress * 100).format("%.0f"); // round not only format
+        return (progress > 1.0) ? 100.format("%i") : (progress * 100).format("%.0f"); // round not only format
     }
-    return 0; 
+    return 0.format("%i");
 }
