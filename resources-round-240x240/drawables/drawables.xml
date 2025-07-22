@@ -1,0 +1,8 @@
+<drawables xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
+    <bitmap id="LauncherIcon" filename="launcher.png" />
+    <bitmap id="Pic0" filename="0.png" dithering="none"/>
+    <bitmap id="Pic1" filename="1.png" dithering="none"/>
+    <bitmap id="Pic2" filename="2.png" dithering="none"/>
+    <bitmap id="Pic3" filename="3.png" dithering="none"/>
+
+</drawables>
