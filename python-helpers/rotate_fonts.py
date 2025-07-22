@@ -61,7 +61,7 @@ def create_font_variant(angle, size, idx):
     # fnt file
     fnt_filename = png_filename.replace(".png", ".fnt")
     with open(os.path.join(output_dir, str(size), fnt_filename), "w", encoding="utf-8") as f:
-        f.write(f'info face="{angle}deg_{size}px" size={size} bold=0 italic=0 charset="" unicode=1 stretchH=100 smooth=1 aa=1 padding=1,1,1,1 spacing=1,1\n')
+        f.write(f'info face="{font_name}" size={size} bold=0 italic=0 charset="" unicode=1 stretchH=100 smooth=1 aa=1 padding=1,1,1,1 spacing=1,1\n')
         f.write(f'common lineHeight={max_height} base=0 scaleW={sheet.width} scaleH={sheet.height} pages=1 packed=0\n')
         f.write(f'page id=0 file="{png_filename}"\n')
         f.write(f'chars count={len(metadata)}\n')
