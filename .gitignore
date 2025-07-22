@@ -2,6 +2,7 @@ bin/
 **/.DS_Store
 python-helpers/*
 !python-helpers/*.py
+!python-helpers/*.txt
 .aider*
 screenshots/
 scratch
