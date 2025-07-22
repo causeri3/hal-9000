@@ -61,30 +61,33 @@ class Fields{
             309.375, 
             300.9375, 
             292.5];
-
-
-
-        //x = dc.getWidth() / 2;
-        //y = dc.getHeight() / 2;
-        // radius = 60;
         Settings.getProperties();
     }
 
     function padLeft(input as String, targetLength as Number, padChar as String) as String {
-
         var paddingNeeded = targetLength - input.length();
         if (paddingNeeded <= 0) {
             return input;
         }
-
         var padding = "";
         for (var i = 0; i < paddingNeeded; i += 1) {
             padding += padChar;
         }
-
         return padding + input;
     }
 
+    function addSeperator(value1 as String, value2 as String, value3 as String) as String {
+        if ((value1.length() > 0) && (value2.length() > 0)){
+            value1 += "•";
+            }
+        if ((value2.length() > 0) && (value3.length() > 0)){
+            value2 += "•";
+        }
+        if ((value1.length() > 0) && (value2.length() == 0) && (value3.length() > 0)){
+            value1 += "•";
+        }
+        return value1 + value2 + value3;
+    }
 
 
     function drawTest(dc as Dc) as Void {
@@ -102,7 +105,6 @@ class Fields{
                 dc.drawText(x, y, Graphics.FONT_TINY, "•", Graphics.TEXT_JUSTIFY_CENTER);
             }
             else{dc.drawText(x, y, fonts[i], "4", Graphics.TEXT_JUSTIFY_CENTER);}
-
 
         }
 
@@ -156,12 +158,18 @@ class Fields{
         dc.fillRectangle(_x + 1, _y + 1, fillWidth, h_body - 2);
     }
     
-    function Field1(dc as Dc) {
+    function getFieldsString(dc as Dc) {
         var field1SettingString = Settings.getFieldString(Settings.SettingField1);
         var field1Value = choose_field(field1SettingString);
-        dc.drawText(0.55*width, .045*height, Graphics.FONT_TINY, field1Value, Graphics.TEXT_JUSTIFY_CENTER);
+        var field2SettingString = Settings.getFieldString(Settings.SettingField2);
+        var field2Value = choose_field(field2SettingString);
+        var field3SettingString = Settings.getFieldString(Settings.SettingField3);
+        var field3Value = choose_field(field3SettingString);
 
+        var fieldsString = addSeperator(field1Value, field2Value, field3Value);
+        //dc.drawText(0.55*width, .045*height, Graphics.FONT_TINY, fieldsString, Graphics.TEXT_JUSTIFY_CENTER);
     }
+        
 
     // function drawSmoke(dc as Dc) as Void {
     //     var smokeSettingString = Settings.getFieldString(Settings.smokeSetting);
@@ -201,17 +209,17 @@ class Fields{
             settingValue = padLeft(getHeartRate(), 3, "0");
         }
         else if (settingString.equals("None")) {
-            settingValue = "   ";
+            settingValue = "";
         }
         else {
-            settingValue = "   ";
+            settingValue = "";
         }
         return settingValue;
     }
 
     function update_fields(dc as Dc) as Void{
         drawTest(dc);
-        Field1(dc);
+        getFieldsString(dc);
         // drawSmoke(dc);
         // drawHeart(dc);
         // drawCup(dc);
@@ -224,7 +232,6 @@ class Fields{
 
 
 /// todo
-// get rid of battery setting
 // pad total string, back and front
 // if statement with fonts for bulletpoint and empty space
 // loop over filed strings
