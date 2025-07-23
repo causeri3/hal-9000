@@ -10,6 +10,7 @@ class BackgroundAnimation {
     private var currentImage;
     var isAnimating = false;
     var timerTriggered = false;
+    private var direction = 1; // 1 forward, -1 backward
 
     function drawBackground(dc) {
 
@@ -92,7 +93,14 @@ class BackgroundAnimation {
     function switchBackground() as Void {
         // free the previous image to save memory
         currentImage = null;
-        imageIndex = (imageIndex + 1) % 4;
+        imageIndex += direction;
+
+        if (imageIndex == 3) {
+            direction = -1;
+        } else if (imageIndex == 0) {
+            direction = 1;
+        }
+
         currentImage = loadImage(imageIndex);
         restartAnimationTimer();
         timerTriggered = true;
