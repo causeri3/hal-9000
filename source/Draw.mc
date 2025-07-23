@@ -1,13 +1,10 @@
 import Toybox.Graphics;
 import Toybox.WatchUi;
 import Toybox.Lang;
-// import Toybox.System;
-// import Toybox.WatchUi.View;
 
 
 
 class Fields{
-
     private var font_size; 
     private var width;
     private var height;
@@ -64,6 +61,7 @@ class Fields{
         Settings.getProperties();
     }
 
+
     function padLeft(input as String, targetLength as Number, padChar as String) as String {
         var paddingNeeded = targetLength - input.length();
         if (paddingNeeded <= 0) {
@@ -75,6 +73,7 @@ class Fields{
         }
         return padding + input;
     }
+
 
     function addSeperator(value1 as String, value2 as String, value3 as String) as String {
         if ((value1.length() > 0) && (value2.length() > 0)){
@@ -89,6 +88,7 @@ class Fields{
         return value1 + value2 + value3;
     }
 
+
     function extendString(fieldsString as String) as String {
         var missingChars = 17 - fieldsString.length();
         if (missingChars == 0){
@@ -101,27 +101,6 @@ class Fields{
         return spaces + fieldsString + spaces;
         }
 
-/*
-    function drawTest(dc as Dc) as Void {
-        dc.setColor(0xff0000, Graphics.COLOR_TRANSPARENT);
-
-        for (var i = 0; i < angles.size(); i += 1) {
-            // correcting for fact that letters are not being positioned on teh middel, but top, which doesnt work nicely with rotation
-            var mirrored_i = i <= 8 ? i : (16 - i);
-            var correction = mirrored_i * (angle_step_size * (font_size / 180));
-            var angle = angles[i];
-            var radians = angle * Math.PI / 180.0;
-            var x = cx + (r-correction) * Math.sin(radians);
-            var y = cx + (r-correction) * Math.cos(radians);
-            if(angle == 360){
-                dc.drawText(x, y, Graphics.FONT_TINY, "•", Graphics.TEXT_JUSTIFY_CENTER);
-            }
-            else{dc.drawText(x, y, fonts[i], "4", Graphics.TEXT_JUSTIFY_CENTER);}
-
-        }
-
-    }
-    */
 
     function drawFieldsString(dc as Dc) as Void {
 
@@ -146,29 +125,6 @@ class Fields{
             dc.drawText(x, y, font, char, Graphics.TEXT_JUSTIFY_CENTER);
         }
     }
-
-
-    // function drawHeart(dc as Dc) as Void {
-
-    //     var heartRate = getHeartRate();
-    //     var heartSettingString = Settings.getFieldString(Settings.heartSetting);
-    //     var heartValue = choose_field(heartSettingString);
-    //     if (heartValue.equals("")) {
-    //     } 
-    //     else {
-    //     dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
-    //     dc.drawText(.46*x, .55*y, TIFFontSmall, "♥", Graphics.TEXT_JUSTIFY_RIGHT);
-    //     dc.drawText(.48*x, .6*y, TIFFontSmall, heartRate, Graphics.TEXT_JUSTIFY_RIGHT);
-    //     }
-
-    // }
-
-    // function drawCup(dc as Dc) as Void {
-    //     var cupSettingString = Settings.getFieldString(Settings.cupSetting);
-    //     var cupValue = choose_field(cupSettingString);
-    //     dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
-    //     dc.drawText(.76*x, .58*y, TIFFontSmall, cupValue, Graphics.TEXT_JUSTIFY_CENTER);
-    // }
 
 
     function drawBattery(dc as Dc) as Void {
@@ -196,6 +152,7 @@ class Fields{
         dc.fillRectangle(_x + 1, _y + 1, fillWidth, h_body - 2);
     }
     
+
     function getFieldsString() {
         var field1SettingString = Settings.getFieldString(Settings.SettingField1);
         var field1Value = choose_field(field1SettingString);
@@ -207,24 +164,8 @@ class Fields{
         var fieldsString = extendString(addSeperator(field1Value, field2Value, field3Value));
         fieldsString = extendString(fieldsString);
         return fieldsString;
-
-
-        //dc.drawText(0.55*width, .045*height, Graphics.FONT_TINY, fieldsString, Graphics.TEXT_JUSTIFY_CENTER);
     }
         
-
-    // function drawSmoke(dc as Dc) as Void {
-    //     var smokeSettingString = Settings.getFieldString(Settings.smokeSetting);
-    //     var smokeValue = choose_field(smokeSettingString);
-    //     dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-    //     if (smokeValue.equals("This is Fine")) {
-    //         dc.drawText(0.55*x, .045*y, TIFFontTiny, smokeValue, Graphics.TEXT_JUSTIFY_CENTER);
-    //     }
-    //     else {
-    //         dc.drawText(0.5*x, .025*y, TIFFontSmall, smokeValue, Graphics.TEXT_JUSTIFY_CENTER);
-    //     }
-
-    // }
 
     function choose_field(settingString) as String{
         var settingValue;
@@ -259,21 +200,11 @@ class Fields{
         return settingValue;
     }
 
+
     function update_fields(dc as Dc) as Void{
         drawFieldsString(dc);
-        //getFieldsString(dc);
-        // drawSmoke(dc);
-        // drawHeart(dc);
-        // drawCup(dc);
         if (Settings.batterySetting) { 
             drawBattery(dc);
         }
     }
 }
-
-
-
-/// todo
-// pad total string, back and front
-// if statement with fonts for bulletpoint and empty space
-// loop over filed strings
