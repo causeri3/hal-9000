@@ -4,6 +4,7 @@ import Toybox.Lang;
 
 
 class Fields{
+    private var font_width; 
     private var font_size; 
     private var width;
     private var height;
@@ -35,9 +36,11 @@ class Fields{
     function init(dc as Dc){
         width = dc.getWidth();
         height = dc.getHeight(); 
-        font_size = dc.getWidth()*0.08;
+        font_width = dc.getWidth()*.054;
+        font_size = dc.getWidth()*.07;
         cx = width / 2;
-        r = cx - (font_size);
+        cy = cx - (font_size/2);
+        r = cy - (font_size/2);
 
         angles = [
             67.5, 
@@ -57,6 +60,7 @@ class Fields{
             309.375, 
             300.9375, 
             292.5];
+
         Settings.getProperties();
     }
 
@@ -102,31 +106,65 @@ class Fields{
 
 
     function drawFieldsString(dc as Dc) as Void {
-
+        var font;
         var fieldsString = getFieldsString();
+        var x;
+        var y;
         Log.debug(fieldsString);
 
         dc.setColor(0xff0000, Graphics.COLOR_TRANSPARENT);
 
         for (var i = 0; i < angles.size(); i += 1) {
-            var mirrored_i = i <= 8 ? i : (16 - i);
-            var correction = mirrored_i * (angle_step_size * (font_size / 180));
             var angle = angles[i];
             var radians = angle * Math.PI / 180.0;
-            var x = cx + (r - correction) * Math.sin(radians);
-            var y = cx + (r - correction) * Math.cos(radians);
-            var font = fonts[i];
+
             // reverse string
             var char = fieldsString.substring(fieldsString.length() - 1 - i, fieldsString.length() - i);
+
             if (char.equals(" ") || char.equals("•")){
-                font = Graphics.FONT_TINY;
+                font = Graphics.FONT_SMALL;
+                y = cy + (r-(font_size/5)) * Math.cos(radians);
+                x = cx + (r-(font_size/5)) * Math.sin(radians);
+            }
+            else{
+                font = fonts[i];
+                x = cx + r * Math.sin(radians);
+                y = cy + r * Math.cos(radians);
             }
             dc.drawText(x, y, font, char, Graphics.TEXT_JUSTIFY_CENTER);
         }
     }
 
 
+    function drawCurvedArc(dc as Dc, x as Number, y as Number, r as Number, percentage as Number) {
+        if (percentage == 0){return;}
+
+        dc.setPenWidth(width*.01);
+        var span = 360.0 * ((100-percentage) / 100.0);
+        var startAngle = 270 - (span / 2);
+        var endAngle = 270 + (span / 2);
+
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.drawArc(x, y, r, Graphics.ARC_CLOCKWISE, startAngle, endAngle);
+    }
+
+
+    function drawBodyBattery(dc as Dc) as Void{
+        var bodyBattery = getBodyBattery();
+        bodyBattery = bodyBattery.equals("") ? 0 as Number : bodyBattery.toNumber();
+        bodyBattery = 50;
+
+        var r = .48*width;
+        var x =  .5*width;
+        var y = .5*width;
+        var direction = -1; 
+        drawCurvedArc(dc, x, y, r, bodyBattery);
+
+    }
+
+
     function drawBattery(dc as Dc) as Void {
+        dc.setPenWidth(1);
         var stats = System.getSystemStats();
         var battery = stats.battery;
     
@@ -134,21 +172,19 @@ class Fields{
     
         var _x = .75*width;
         var _y = .45*height;
-        var w_body = .08*width;
-        var h_body = .04*height;
+        var w_body = .12*width;
+        var h_body = .02*height;
         var w_tip = .008*width;
-        var h_tip = .025*height;
-        dc.drawRectangle(_x, _y, w_body, h_body);  // battery body
-        dc.drawRectangle(_x + w_body, _y + w_tip, w_tip, h_tip);    // battery tip
+        dc.fillRectangle(_x + w_body, _y, w_tip, h_body);    // end of battery space
     
-        // Fill battery level in different color
+        // battery level in red when under 20%
         if (battery <= 20) {
             dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
         } else {
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         }
-        var fillWidth = (battery / 100.0) * 18;  // Scale battery level to fit
-        dc.fillRectangle(_x + 1, _y + 1, fillWidth, h_body - 2);
+        var fillWidth = (battery / 100.0) * w_body;
+        dc.fillRectangle(_x, _y, fillWidth, h_body);
     }
     
 
@@ -204,6 +240,9 @@ class Fields{
         drawFieldsString(dc);
         if (Settings.batterySetting) { 
             drawBattery(dc);
+        }
+        if (Settings.bodyBatterySetting) { 
+            drawBodyBattery(dc);
         }
     }
 }
