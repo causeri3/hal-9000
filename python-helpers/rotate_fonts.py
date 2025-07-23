@@ -21,10 +21,12 @@ characters = "0123456789:|"
 
 os.makedirs(output_dir, exist_ok=True)
 
-def create_font_variant(angle, size, idx):
-    font = ImageFont.truetype(font_path, size)
-    char_images = []
-    metadata = []
+
+def measure_biggest_char(font, size, angle):
+    max_width = 0
+    max_height = 0
+    rotated_chars = []
+
 
     for char in characters:
         img = Image.new("RGBA", (size * 4, size * 4), (0, 0, 0, 0))
@@ -32,8 +34,35 @@ def create_font_variant(angle, size, idx):
         draw.text((img.width // 2, img.height // 2), char, font=font, fill=(255, 255, 255, 255), anchor="mm")
 
         rotated = img.rotate(angle, resample=Image.BICUBIC, expand=True)
+        #rotated_chars.append((char, rotated))
         cropped = rotated.crop(rotated.getbbox())
-        char_images.append((char, cropped))
+        rotated_chars.append((char, cropped))
+        #cropped.show()
+        print(cropped.width)
+        print(cropped.height)
+
+        max_width = max(max_width, cropped.width)
+        max_height = max(max_height, cropped.height)
+    return rotated_chars, max_width, max_height
+
+#max_width, max_height = measure_biggest_char(size)
+
+def create_font_variant(angle, size, idx):
+    font = ImageFont.truetype(font_path, size)
+    rotated_chars, max_width, max_height = measure_biggest_char(font, size, angle)
+    char_images = []
+    metadata = []
+
+    for char, rotated in rotated_chars:
+        canvas = Image.new("RGBA", (max_width, max_height), (0, 0, 0, 0))
+        offset = (
+            (max_width - rotated.width) // 2,
+            (max_height - rotated.height) // 2
+        )
+        #print(offset)
+        canvas.paste(rotated, offset, rotated)
+        #canvas.paste(rotated, (max_width, max_height))
+        char_images.append((char, canvas))
 
     # bitmap
     total_width = sum(img.size[0] + 2 for _, img in char_images)
@@ -77,4 +106,5 @@ for size in font_sizes:
     for idx, angle in enumerate(angles):
         print(f"Generating: size={size}, angle={angle}")
         create_font_variant(angle, size, idx)
+
 
