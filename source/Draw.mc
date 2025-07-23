@@ -3,7 +3,6 @@ import Toybox.WatchUi;
 import Toybox.Lang;
 
 
-
 class Fields{
     private var font_size; 
     private var width;
