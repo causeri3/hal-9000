@@ -6,11 +6,14 @@ module Settings {
     var SettingField1;
     var SettingField2;
     var SettingField3;
+    var SettingArc1;
+    var SettingArc2;
+    var SettingArc3;
+    var SettingRefField;
     var stressScoreSetting;
     var caloriesGoal;
     var stepsGoal;
     var animationSetting;
-    var batterySetting;
 
 
     function getOrDefault(key, defaultValue, expectedType) {
@@ -26,11 +29,14 @@ module Settings {
         SettingField1 = getOrDefault("Field1", 1, Lang.Number);
         SettingField2 = getOrDefault("Field2", 5, Lang.Number);
         SettingField3 = getOrDefault("Field3", 2, Lang.Number);
+        SettingArc1 = getOrDefault("Arc1", 9, Lang.Number);
+        SettingArc2 = getOrDefault("Arc2", 6, Lang.Number);
+        SettingArc3 = getOrDefault("Arc3", 7, Lang.Number);
+        SettingRefField = getOrDefault("RefField", 11, Lang.Number);
         stepsGoal = getOrDefault("stepsGoal", 10000, Lang.Number);
         stressScoreSetting = getOrDefault("stressThreshold", 50, Lang.Number);
         caloriesGoal = getOrDefault("caloriesGoal", 2000, Lang.Number);
         animationSetting = getOrDefault("animationSetting", true, Lang.Boolean);
-        batterySetting = getOrDefault("batterySetting", true, Lang.Boolean);
     }
 
 
@@ -47,6 +53,7 @@ module Settings {
         8 => Rez.Strings.steps,
         9 => Rez.Strings.stepsPerc,
         10 => Rez.Strings.minutes,
+        11 => Rez.Strings.battery,
     };
 
     function getFieldResource(fieldId){
