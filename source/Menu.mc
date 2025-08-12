@@ -36,9 +36,9 @@ class Menu extends WatchUi.Menu2 {
     );
     Menu2.addItem(
         new MenuItem(
-            Rez.Strings.bodyThreshold, 
-            Settings.bodyScoreSetting.toString(), 
-            "bodyThreshold", 
+            Rez.Strings.stressThreshold, 
+            Settings.stressScoreSetting.toString(), 
+            "stressThreshold", 
             {} 
         )
     );
@@ -84,11 +84,10 @@ class MenuDelegate extends WatchUi.Menu2InputDelegate {
       cycleFields(Settings.SettingField2, item, id, null);
     }
     else if (id.equals("Field3")) {
-      var validKeys = [0, 2, 7, 8];   
       cycleFields(Settings.SettingField3, item, id, null);
     }
-    else if (id.equals("bodyThreshold")) {                                                                      
-       cycleNumbers(Settings.bodyScoreSetting, item, id, 10, 110);                                                                             
+    else if (id.equals("stressThreshold")) {                                                                      
+       cycleNumbers(Settings.stressScoreSetting, item, id, 10, 110);                                                                             
      }
     else if (id.equals("caloriesGoal")) {                                                                      
        cycleNumbers(Settings.caloriesGoal, item, id, 100, 10100);                                                                     
@@ -98,7 +97,7 @@ class MenuDelegate extends WatchUi.Menu2InputDelegate {
      }
       else if (id.equals("batterySetting")) {                                                                        
        toggleBattery(item);                                                                                         
-     }      
+     }     
   }
 
 //var validKeys as Null or Array<Number> = null;

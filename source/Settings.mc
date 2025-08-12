@@ -6,8 +6,9 @@ module Settings {
     var SettingField1;
     var SettingField2;
     var SettingField3;
-    var bodyScoreSetting;
+    var stressScoreSetting;
     var caloriesGoal;
+    var stepsGoal;
     var animationSetting;
     var batterySetting;
 
@@ -25,7 +26,8 @@ module Settings {
         SettingField1 = getOrDefault("Field1", 1, Lang.Number);
         SettingField2 = getOrDefault("Field2", 5, Lang.Number);
         SettingField3 = getOrDefault("Field3", 2, Lang.Number);
-        bodyScoreSetting = getOrDefault("bodyThreshold", 50, Lang.Number);
+        stepsGoal = getOrDefault("stepsGoal", 10000, Lang.Number);
+        stressScoreSetting = getOrDefault("stressThreshold", 50, Lang.Number);
         caloriesGoal = getOrDefault("caloriesGoal", 2000, Lang.Number);
         animationSetting = getOrDefault("animationSetting", true, Lang.Boolean);
         batterySetting = getOrDefault("batterySetting", true, Lang.Boolean);
@@ -42,6 +44,9 @@ module Settings {
         5 => Rez.Strings.time,
         6 => Rez.Strings.body,
         7 => Rez.Strings.caloriesPerc,
+        8 => Rez.Strings.steps,
+        9 => Rez.Strings.stepsPerc,
+        10 => Rez.Strings.minutes,
     };
 
     function getFieldResource(fieldId){
