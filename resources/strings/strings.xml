@@ -1,21 +1,28 @@
 <strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
     <string id="AppName">hal9000</string>
     <string id="none">None</string>
-    <string id="Field1">Field 1</string>
-    <string id="Field2">Field 2</string>
-    <string id="Field3">Field 3</string>
-    <string id="bodyThreshold">Body Battery Threshold</string>
+    <string id="Field1">Left Field</string>
+    <string id="Field2">Middle Field</string>
+    <string id="Field3">Right Field</string>
+    <string id="Arc1">Inner Arc</string>
+    <string id="Arc2">Middle Arc</string>
+    <string id="Arc3">Outer Arc</string>
+    <string id="RefField">Reflection Field</string>
+    <string id="stressThreshold">Stress Level Threshold</string>
     <string id="date">Date</string>
     <string id="calories">Calories</string>
     <string id="time">Time</string>
     <string id="heart">Heart Rate</string>
     <string id="stress">Stress Level</string>
     <string id="body">Body Battery</string>
+    <string id="battery">Battery Level</string>
     <string id="caloriesPerc">Calories Percentage</string>
     <string id="caloriesGoal">Calories Goal</string>
-    <string id="bodyThreshold">Body Battery Animation</string>
+    <string id="minutes">Active Minutes This Week</string>
+    <string id="steps">Steps</string>
+    <string id="stepsGoal">Steps Goal</string>
+    <string id="stepsPerc">Steps Percentage</string>
     <string id="animationSetting">Animation</string> 
-    <string id="batterySetting">Show Battery</string>                                                                                                                   
     <string id="on">On</string>                                                                                        
     <string id="off">Off</string>  
 </strings>
