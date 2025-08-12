@@ -111,19 +111,10 @@ function getLatestStressLevelFromSensorHistory() as Number or Null {
     return (sample != null && sample.data != null) ? sample.data : null;
 }
 
-// workaround so the weekday stays English 
-// and I dont have to provide all characters of all possible languages in the Garmin watch Setting
-function numericToStringWeekDay(weekday as Number) as String {
-    var weekDaysString = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    return weekDaysString[weekday-1];
-}
 
 function getDate() as String {
     var now = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
-    var dateString = Lang.format(
-        "$1$ $2$",
-        [numericToStringWeekDay(now.day_of_week), now.day]
-        );
+    var dateString = Lang.format("$1$|$2$", [now.day.format("%02d"), now.month.format("%02d")]);
     return dateString;
 }
 
