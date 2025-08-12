@@ -6,13 +6,13 @@ import Toybox.Time;
 import Toybox.SensorHistory;
 
 
-function getHeartRate() as String {
+function getHeartRate() as Number or Null{
     var heartRate = null;
     // real-time data
     var info = Activity.getActivityInfo();
     if (info != null && info.currentHeartRate != null) {
-        heartRate = info.currentHeartRate.format("%i");
-        Log.debug("HR from ActivityMonitor: " + heartRate);
+        heartRate = info.currentHeartRate;
+        //Log.debug("HR from ActivityMonitor: " + heartRate);
         return heartRate;
     }
 
@@ -20,24 +20,51 @@ function getHeartRate() as String {
     // get last sample, working with Time.Duration led to crashes, stopped digging deeper
     // var hrIterator = ActivityMonitor.getHeartRateHistory(Time.Duration(6, true);
     var hrIterator = ActivityMonitor.getHeartRateHistory(1, true);
-    // Not sure if it is needed - just more safety
-    if (hrIterator == null) {
-        return "";
-        }
     var sample = hrIterator.next();
     if (sample != null && sample.heartRate != ActivityMonitor.INVALID_HR_SAMPLE) {
-        heartRate = sample.heartRate.format("%i");
-        Log.debug("HR from HeartRateHistory: " + heartRate);
+        heartRate = sample.heartRate;
+        //Log.debug("HR from HeartRateHistory: " + heartRate);
         return heartRate;
     }
 
-    return "";
+    return heartRate;
+}
+
+function getActiveMinutes() as Number or Null{
+    var activityInfo = ActivityMonitor.getInfo();
+    var activeMinutes = activityInfo.activeMinutesWeek;
+    return (activeMinutes != null) ? activeMinutes.total : null;
 }
 
 
-function getStressLevel() as String {
+function getSteps() as Number or Null{
+    var activityInfo = ActivityMonitor.getInfo();
+    var steps = activityInfo.steps;
+    return steps;
+}
 
-    //return = "55";
+
+function getStepsProgress() as Number or Null {
+    var goal = Settings.stepsGoal;
+    var steps = getSteps();
+
+    if (goal > 0 && steps != null) {
+        var progress = steps.toFloat() / goal.toFloat();
+
+        return (progress > 1.0) ? 100 : (progress * 100); 
+    }
+    return 0; 
+}
+
+function getBatteryLevel() as Float {
+    var stats = System.getSystemStats();
+    var battery = stats.battery;
+    return battery;
+}
+
+function getStressLevel() as Number or Null {
+    // var value = "55";
+    // return value;
 
     var stressLevel = null;
     
@@ -47,21 +74,20 @@ function getStressLevel() as String {
         var activityInfo = ActivityMonitor.getInfo();
 
     if (activityInfo.stressScore != null) {
-        stressLevel = activityInfo.stressScore.toDouble();
-        Log.debug("Stress from ActivityMonitor: " + stressLevel);
+        stressLevel = activityInfo.stressScore;
+        //Log.debug("Stress from ActivityMonitor: " + stressLevel);
 
-        return stressLevel.format("%i");
+        return stressLevel;
         }
     }
     
     // fall back to sensor history - takes around 3 min to update value
     if (stressLevel == null) {
-    stressLevel = getLatestStressLevelFromSensorHistory();
-    Log.debug("Stress from SensorHistory: " + stressLevel);
+        stressLevel = getLatestStressLevelFromSensorHistory();
+        //Log.debug("Stress from SensorHistory: " + stressLevel);
 
-    return stressLevel;
+        return stressLevel;
     }
-    return "";
 }
 
 function getStressIterator() {
@@ -75,72 +101,116 @@ function getStressIterator() {
 }
     
 
-function getLatestStressLevelFromSensorHistory() as String {
+function getLatestStressLevelFromSensorHistory() as Number or Null {
     // takes mostly plus minus 3 minutes to get a new stress value
     var stressIterator = getStressIterator();
     if (stressIterator == null) {
-        return "";
+        return null;
     }
     var sample = stressIterator.next();  
-    return (sample != null && sample.data != null) ? sample.data.format("%i") : "";
+    return (sample != null && sample.data != null) ? sample.data : null;
 }
 
-
-// function getDate() as String {
-//     var now = Gregorian.info(Time.now(), Time.FORMAT_MEDIUM);
-//     var dateString = Lang.format(
-//         "$1$ $2$",
-//         [now.day_of_week, now.day]
-//         );
-//     return dateString;
-// }
+// workaround so the weekday stays English 
+// and I dont have to provide all characters of all possible languages in the Garmin watch Setting
+function numericToStringWeekDay(weekday as Number) as String {
+    var weekDaysString = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    return weekDaysString[weekday-1];
+}
 
 function getDate() as String {
     var now = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
     var dateString = Lang.format(
-        "$1$|$2$",
-        [now.day.format("%02d"), now.month.format("%02d")]
+        "$1$ $2$",
+        [numericToStringWeekDay(now.day_of_week), now.day]
         );
     return dateString;
 }
 
+
 function getTime() as String {
     var clockTime = System.getClockTime();
-    var timeString = Lang.format("$1$:$2$", [clockTime.hour, clockTime.min.format("%02d")]);
-    return timeString;
+    var settings = System.getDeviceSettings();
+
+    if (settings.is24Hour) {
+        return Lang.format("$1$:$2$", [clockTime.hour.format("%02d"), clockTime.min.format("%02d")]);
+    } else {
+        var hour12 = clockTime.hour % 12;
+        if (hour12 == 0) {
+            hour12 = 12;
+        }
+        return Lang.format("$1$:$2$", [hour12.format("%02d"), clockTime.min.format("%02d")]);
+    }
 }
 
 
-function getCalories() {
+
+
+function getCalories() as Number or Null {
     var activityInfo = ActivityMonitor.getInfo();
-    return activityInfo.calories; //.toDouble();
+    return activityInfo.calories;
 }
 
+function getBodyIterator(period as Time.Duration?) {
+    if ((Toybox has :SensorHistory) && (SensorHistory has :getBodyBatteryHistory)) {
+        return SensorHistory.getBodyBatteryHistory({
+            :period => period,
+            :order => SensorHistory.ORDER_NEWEST_FIRST
+        });
+    }
+    return null;
+}
 
-function getBodyBattery() {
-    var bodyBattery = null;
-    if (Toybox has :SensorHistory && SensorHistory has :getBodyBatteryHistory) {
-        var iterator = SensorHistory.getBodyBatteryHistory({ :period => 1 });
-        if (iterator != null) {
-            bodyBattery = iterator.next();    
+function getBodyBattery() as Number or Null {
+    // crashed on descentmk2s between 12h/24h OOM
+    var durations = [
+        new Time.Duration(60 * 30),         // 30 minutes
+        new Time.Duration(60 * 60),         // 1 hour
+        new Time.Duration(60 * 60 * 6),     // 6 hours
+        // it seems to me as after 6h the old body battery value lost its meaning completely
+    ];
+
+    for (var i = 0; i < durations.size(); i++) {
+        //Log.debug("Duration Minutes: " + (durations[i].value() /60));
+        //if (i > 0) {Log.debug("Duration Minutes: " + (durations[i].value() /60));}
+        var duration = durations[i];
+        var bbIterator = getBodyIterator(duration);
+
+        if (bbIterator == null) {
+            continue;
+        }
+
+        var sample = bbIterator.next();
+        while (sample != null) {
+            if (sample.data != null && sample.data.toNumber() != null) {
+                return sample.data.toNumber();
+            }
+            sample = bbIterator.next();
         }
     }
-    if (bodyBattery != null) {
-        bodyBattery = bodyBattery.data.format("%i");
-        return bodyBattery;
-    }
-    return "";
+
+    return null; 
 }
 
-
-function getCaloriesProgress() {
+function getCaloriesProgress() as Number or Null {
     var goal = Settings.caloriesGoal;
     var calories = getCalories();
 
     if (goal > 0 && calories != null) {
         var progress = calories.toFloat() / goal.toFloat();
 
-        return (progress > 1.0) ? 100.format("%i") : (progress * 100).format("%.0f"); // round not only format
+        return (progress > 1.0) ? 100 : (progress * 100); 
     }
-    return 0.format("%i");
+    return 0; 
 }
+
+function reformatToString(value) as String {
+    if (value instanceof Lang.String) {
+        return value; 
+        }
+    if (value == null) {
+        return "";
+    }
+    return value.format("%.0f"); // round not only format
+}
+\

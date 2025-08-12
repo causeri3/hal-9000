@@ -56,11 +56,11 @@ class BackgroundAnimation {
     }
 
     function updateAnimationState() {
-        var bodyBattery = getBodyBattery();
+        var stressLevel = getStressLevel();
         // == doesnt work with strings in Monkey c - Java like
-        bodyBattery = bodyBattery.equals("") ? 0 as Number : bodyBattery.toNumber();
+        stressLevel = stressLevel == null ? 0 : stressLevel;
 
-        if (bodyBattery > Settings.bodyScoreSetting) {
+        if (stressLevel < Settings.stressScoreSetting) {
             stopAnimation();
             // free the previous image to save memory
             currentImage = null;

@@ -65,7 +65,8 @@ class Fields{
     }
 
 
-    function padLeft(input as String, targetLength as Number, padChar as String) as String {
+    function padLeft(input, targetLength as Number, padChar as String) as String {
+        input = reformatToString(input);
         var paddingNeeded = targetLength - input.length();
         if (paddingNeeded <= 0) {
             return input;
@@ -136,29 +137,62 @@ class Fields{
     }
 
 
-    function drawCurvedArc(dc as Dc, x as Number, y as Number, r as Number, percentage as Number) {
+    function drawCurvedArc(dc as Dc, 
+                          x as Number, 
+                          y as Number, 
+                          r as Number, 
+                          percentage as Number, 
+                          colour as Number) {
         if (percentage == 0){return;}
-
-        dc.setPenWidth(width*.01);
         var span = 360.0 * ((100-percentage) / 100.0);
         var startAngle = 270 - (span / 2);
         var endAngle = 270 + (span / 2);
 
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(colour, Graphics.COLOR_TRANSPARENT);
         dc.drawArc(x, y, r, Graphics.ARC_CLOCKWISE, startAngle, endAngle);
     }
 
 
-    function drawBodyBattery(dc as Dc) as Void{
-        var bodyBattery = getBodyBattery();
-        bodyBattery = bodyBattery.equals("") ? 0 as Number : bodyBattery.toNumber();
-        bodyBattery = 50;
+    function drawOuterArch(dc as Dc) as Void{
+        //var bodyBattery = getBodyBattery();
+        //bodyBattery = bodyBattery.equals("") ? 0 as Number : bodyBattery.toNumber();
+        var value = 50;
 
-        var r = .48*width;
+        dc.setPenWidth(width*.01);
+        var r = .485*width;
         var x =  .5*width;
         var y = .5*width;
-        var direction = -1; 
-        drawCurvedArc(dc, x, y, r, bodyBattery);
+        var colour = Graphics.COLOR_WHITE;
+        
+        drawCurvedArc(dc, x, y, r, value, colour);
+
+    }
+
+    function drawMiddleArch(dc as Dc) as Void{
+        //var bodyBattery = getBodyBattery();
+        //bodyBattery = bodyBattery.equals("") ? 0 as Number : bodyBattery.toNumber();
+        var value = 50;
+        dc.setPenWidth(width*.0155);
+        var r = .45*width;
+        var x =  .5*width;
+        var y = .5*width;
+        var colour = 0xaaaaaa;
+        
+        drawCurvedArc(dc, x, y, r, value, colour);
+
+    }
+
+    function drawInnerArch(dc as Dc) as Void{
+        //var bodyBattery = getBodyBattery();
+        //bodyBattery = bodyBattery.equals("") ? 0 as Number : bodyBattery.toNumber();
+        var value = 50;
+        dc.setPenWidth(width*.005);
+        var r = .435*width;
+        var x =  .5*width;
+        var y = .5*width;
+        var colour = 0x55aaff;
+        //var colour = Graphics.COLOR_WHITE;
+        drawCurvedArc(dc, x, y, r, value, colour);
 
     }
 
@@ -195,9 +229,7 @@ class Fields{
         var field2Value = choose_field(field2SettingString);
         var field3SettingString = Settings.getFieldString(Settings.SettingField3);
         var field3Value = choose_field(field3SettingString);
-
         var fieldsString = extendString(addSeperator(field1Value, field2Value, field3Value));
-        fieldsString = extendString(fieldsString);
         return fieldsString;
     }
         
@@ -206,7 +238,13 @@ class Fields{
         var settingValue;
         
         if (settingString.equals("Calories")) {
-            settingValue =  padLeft(getCalories().toString(), 5, "0");
+            settingValue =  padLeft(getCalories(), 5, "0");
+        } 
+        if (settingString.equals("Steps")) {
+            settingValue =  padLeft(getSteps(), 3, "0");
+        } 
+        if (settingString.equals("Active Minutes This Week")) {
+            settingValue =  padLeft(getActiveMinutes(), 3, "0");
         } 
         else if (settingString.equals("Stress Level")) {
             settingValue = padLeft(getStressLevel(), 3, "0");
@@ -216,6 +254,9 @@ class Fields{
         }
         else if (settingString.equals("Calories Percentage")) {
             settingValue = padLeft(getCaloriesProgress(), 3, "0");
+        }
+        else if (settingString.equals("Steps Percentage")) {
+            settingValue = padLeft(getStepsProgress(), 3, "0");
         }
         else if (settingString.equals("Date")) {
             settingValue = padLeft(getDate(), 5, "0");
@@ -241,8 +282,17 @@ class Fields{
         if (Settings.batterySetting) { 
             drawBattery(dc);
         }
-        if (Settings.bodyBatterySetting) { 
-            drawBodyBattery(dc);
-        }
+        drawOuterArch(dc);
+        drawMiddleArch(dc);
+        drawInnerArch(dc);
     }
 }
+
+
+// to do:
+// draw hal with smaller rim and grey reflections
+// three arches for % measures
+// Settings & menu for arches (None, is no arch)
+// delete body batery setting everywhere
+
+
