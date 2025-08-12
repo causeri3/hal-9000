@@ -9,6 +9,10 @@
             <listEntry value="5">@Strings.time</listEntry>
             <listEntry value="6">@Strings.body</listEntry>
             <listEntry value="7">@Strings.caloriesPerc</listEntry>
+            <listEntry value="8">@Strings.steps</listEntry>
+            <listEntry value="9">@Strings.stepsPerc</listEntry>
+            <listEntry value="10">@Strings.minutes</listEntry>
+            <listEntry value="11">@Strings.battery</listEntry>
         </settingConfig>
     </setting>
 
@@ -22,11 +26,14 @@
             <listEntry value="5">@Strings.time</listEntry>
             <listEntry value="6">@Strings.body</listEntry>
             <listEntry value="7">@Strings.caloriesPerc</listEntry>
-
+            <listEntry value="8">@Strings.steps</listEntry>
+            <listEntry value="9">@Strings.stepsPerc</listEntry>
+            <listEntry value="10">@Strings.minutes</listEntry>
+            <listEntry value="11">@Strings.battery</listEntry>
         </settingConfig>
     </setting>
 
-        <setting propertyKey="@Properties.Field3" title="@Strings.Field3">
+    <setting propertyKey="@Properties.Field3" title="@Strings.Field3">
         <settingConfig type="list">
             <listEntry value="0">@Strings.none</listEntry>
             <listEntry value="1">@Strings.heart</listEntry>
@@ -36,7 +43,53 @@
             <listEntry value="5">@Strings.time</listEntry>
             <listEntry value="6">@Strings.body</listEntry>
             <listEntry value="7">@Strings.caloriesPerc</listEntry>
+            <listEntry value="8">@Strings.steps</listEntry>
+            <listEntry value="9">@Strings.stepsPerc</listEntry>
+            <listEntry value="10">@Strings.minutes</listEntry>
+            <listEntry value="11">@Strings.battery</listEntry>
+        </settingConfig>
+    </setting>
 
+    <setting propertyKey="@Properties.Arc1" title="@Strings.Arc1">
+            <settingConfig type="list">
+                <listEntry value="0">@Strings.none</listEntry>
+                <listEntry value="2">@Strings.stress</listEntry>
+                <listEntry value="6">@Strings.body</listEntry>
+                <listEntry value="7">@Strings.caloriesPerc</listEntry>
+                <listEntry value="9">@Strings.stepsPerc</listEntry>
+                <listEntry value="11">@Strings.battery</listEntry>
+        </settingConfig>
+    </setting>
+
+    <setting propertyKey="@Properties.Arc2" title="@Strings.Arc2">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.none</listEntry>
+            <listEntry value="2">@Strings.stress</listEntry>
+            <listEntry value="6">@Strings.body</listEntry>
+            <listEntry value="7">@Strings.caloriesPerc</listEntry>
+            <listEntry value="9">@Strings.stepsPerc</listEntry>
+            <listEntry value="11">@Strings.battery</listEntry>
+        </settingConfig>
+    </setting>
+
+    <setting propertyKey="@Properties.Arc3" title="@Strings.Arc3">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.none</listEntry>
+            <listEntry value="2">@Strings.stress</listEntry>
+            <listEntry value="6">@Strings.body</listEntry>
+            <listEntry value="7">@Strings.caloriesPerc</listEntry>
+            <listEntry value="9">@Strings.stepsPerc</listEntry>
+            <listEntry value="11">@Strings.battery</listEntry>
+        </settingConfig>
+    </setting>
+
+    <setting propertyKey="@Properties.RefField" title="@Strings.RefField">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.none</listEntry>
+            <listEntry value="6">@Strings.body</listEntry>
+            <listEntry value="7">@Strings.caloriesPerc</listEntry>
+            <listEntry value="9">@Strings.stepsPerc</listEntry>
+            <listEntry value="11">@Strings.battery</listEntry>
         </settingConfig>
     </setting>
 
@@ -44,16 +97,16 @@
         <settingConfig type="numeric" min="1" max="10000" required="true"/>
     </setting>
 
-    <setting propertyKey="@Properties.bodyThreshold" title="@Strings.bodyThreshold">
+    <setting propertyKey="@Properties.stressThreshold" title="@Strings.stressThreshold">
         <settingConfig type="numeric" min="0" max="100" required="true"/>
    </setting>
 
     <setting propertyKey="@Properties.animationSetting" title="@Strings.animationSetting">
-    <settingConfig type="boolean" required="true"/>
+        <settingConfig type="boolean" required="true"/>
   </setting>
 
-    <setting propertyKey="@Properties.batterySetting" title="@Strings.batterySetting">
-    <settingConfig type="boolean" required="true"/>
-  </setting>
+    <setting propertyKey="@Properties.stepsGoal" title="@Strings.stepsGoal">
+        <settingConfig type="numeric" min="1" max="1000000" required="true"/>
+    </setting>
 
 </settings>
