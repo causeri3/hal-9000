@@ -34,6 +34,39 @@ class Menu extends WatchUi.Menu2 {
             {} 
         )
     );
+
+    Menu2.addItem(
+        new MenuItem(
+            Rez.Strings.Arc1,
+            Settings.getFieldString(Settings.SettingArc1),
+            "Arc1", 
+            {} 
+        )
+    );
+    Menu2.addItem(
+        new MenuItem(
+            Rez.Strings.Arc2,
+            Settings.getFieldString(Settings.SettingArc2),
+            "Arc2", 
+            {} 
+        )
+    );
+    Menu2.addItem(
+        new MenuItem(
+            Rez.Strings.Arc3,
+            Settings.getFieldString(Settings.SettingArc3),
+            "Arc3", 
+            {} 
+        )
+    );
+    Menu2.addItem(
+        new MenuItem(
+            Rez.Strings.RefField,
+            Settings.getFieldString(Settings.SettingRefField),
+            "RefField", 
+            {} 
+        )
+    );
     Menu2.addItem(
         new MenuItem(
             Rez.Strings.stressThreshold, 
@@ -58,14 +91,6 @@ class Menu extends WatchUi.Menu2 {
              {}                                                                                                       
          )                                                                                                            
      ); 
-         Menu2.addItem(                                                                                                   
-         new MenuItem(                                                                                                
-             Rez.Strings.batterySetting,                                                              
-             Settings.batterySetting ? Rez.Strings.on : Rez.Strings.off,                     
-             "batterySetting",                                                                                      
-             {}                                                                                                       
-         )                                                                                                            
-     ); 
   }                                                                                                       
 }
 
@@ -77,6 +102,9 @@ class MenuDelegate extends WatchUi.Menu2InputDelegate {
 
   function onSelect(item) {
     var id = item.getId();
+    var arcKeys = [0, 2, 6, 8, 9, 11]; // only none, stress, body battery, % calories, % steps, battery level  
+    var refKeys = [0, 6, 8, 9, 11]; // only none, body battery, % calories, % steps, battery level    
+  
     if (id.equals("Field1")) {
       cycleFields(Settings.SettingField1, item, id, null);
     }
@@ -86,6 +114,18 @@ class MenuDelegate extends WatchUi.Menu2InputDelegate {
     else if (id.equals("Field3")) {
       cycleFields(Settings.SettingField3, item, id, null);
     }
+    if (id.equals("Arc1")) {
+      cycleFields(Settings.SettingArc1, item, id, arcKeys);
+    }
+    if (id.equals("Arc2")) {
+      cycleFields(Settings.SettingArc2, item, id, arcKeys);
+    }
+    if (id.equals("Arc3")) {
+      cycleFields(Settings.SettingArc3, item, id, arcKeys);
+    }
+    if (id.equals("RefField")) {
+      cycleFields(Settings.SettingRefField, item, id, refKeys);
+    }
     else if (id.equals("stressThreshold")) {                                                                      
        cycleNumbers(Settings.stressScoreSetting, item, id, 10, 110);                                                                             
      }
@@ -94,10 +134,7 @@ class MenuDelegate extends WatchUi.Menu2InputDelegate {
      }
     else if (id.equals("animationSetting")) {                                                                        
        toggleAnimation(item);                                                                                         
-     }
-      else if (id.equals("batterySetting")) {                                                                        
-       toggleBattery(item);                                                                                         
-     }     
+     }  
   }
 
 //var validKeys as Null or Array<Number> = null;
@@ -130,11 +167,5 @@ class MenuDelegate extends WatchUi.Menu2InputDelegate {
      Application.Properties.setValue("animationSetting", Settings.animationSetting);                                        
      Settings.getProperties();
      }
-     
-  hidden function toggleBattery(item){                                                                             
-     Settings.batterySetting = !Settings.batterySetting;                                                                
-     item.setSubLabel(Settings.batterySetting ? Rez.Strings.on : Rez.Strings.off);                                     
-     Application.Properties.setValue("batterySetting", Settings.batterySetting);                                        
-     Settings.getProperties();
-     }   
+
 }
