@@ -4,7 +4,7 @@ import Toybox.Lang;
 
 
 class Fields{
-    private var font_width; 
+    //private var font_width; 
     private var font_size; 
     private var width;
     private var height;
@@ -12,35 +12,17 @@ class Fields{
     private var cy; 
     private var r; 
     private var angles; 
-    private var angle_step_size = 8.4375;
-    private var fonts = [
-            WatchUi.loadResource(Rez.Fonts.font0),
-            WatchUi.loadResource(Rez.Fonts.font1),
-            WatchUi.loadResource(Rez.Fonts.font2),
-            WatchUi.loadResource(Rez.Fonts.font3),
-            WatchUi.loadResource(Rez.Fonts.font4),
-            WatchUi.loadResource(Rez.Fonts.font5),
-            WatchUi.loadResource(Rez.Fonts.font6),
-            WatchUi.loadResource(Rez.Fonts.font7),
-            WatchUi.loadResource(Rez.Fonts.font8),
-            WatchUi.loadResource(Rez.Fonts.font9),
-            WatchUi.loadResource(Rez.Fonts.font10),
-            WatchUi.loadResource(Rez.Fonts.font11),
-            WatchUi.loadResource(Rez.Fonts.font12),
-            WatchUi.loadResource(Rez.Fonts.font13),
-            WatchUi.loadResource(Rez.Fonts.font14),
-            WatchUi.loadResource(Rez.Fonts.font15),
-            WatchUi.loadResource(Rez.Fonts.font16)
-    ];
+    //private var angle_step_size = 8.4375;
+    private var fonts;
     
     function init(dc as Dc){
         width = dc.getWidth();
         height = dc.getHeight(); 
-        font_width = dc.getWidth()*.054;
+        //font_width = dc.getWidth()*.054;
         font_size = dc.getWidth()*.07;
         cx = width / 2;
         cy = cx - (font_size/2);
-        r = cy - (font_size/2);
+        r = cy - (font_size * 1.15);
 
         angles = [
             67.5, 
@@ -60,6 +42,26 @@ class Fields{
             309.375, 
             300.9375, 
             292.5];
+
+        fonts = [
+            WatchUi.loadResource(Rez.Fonts.font0),
+            WatchUi.loadResource(Rez.Fonts.font1),
+            WatchUi.loadResource(Rez.Fonts.font2),
+            WatchUi.loadResource(Rez.Fonts.font3),
+            WatchUi.loadResource(Rez.Fonts.font4),
+            WatchUi.loadResource(Rez.Fonts.font5),
+            WatchUi.loadResource(Rez.Fonts.font6),
+            WatchUi.loadResource(Rez.Fonts.font7),
+            WatchUi.loadResource(Rez.Fonts.font8),
+            WatchUi.loadResource(Rez.Fonts.font9),
+            WatchUi.loadResource(Rez.Fonts.font10),
+            WatchUi.loadResource(Rez.Fonts.font11),
+            WatchUi.loadResource(Rez.Fonts.font12),
+            WatchUi.loadResource(Rez.Fonts.font13),
+            WatchUi.loadResource(Rez.Fonts.font14),
+            WatchUi.loadResource(Rez.Fonts.font15),
+            WatchUi.loadResource(Rez.Fonts.font16)
+        ];
 
         Settings.getProperties();
     }
@@ -156,7 +158,11 @@ class Fields{
     function drawOuterArch(dc as Dc) as Void{
         //var bodyBattery = getBodyBattery();
         //bodyBattery = bodyBattery.equals("") ? 0 as Number : bodyBattery.toNumber();
-        var value = 50;
+        //var value = 50;
+
+        var arc3SettingString = Settings.getFieldString(Settings.SettingArc3);
+        if (arc3SettingString.equals("None")) {return;}
+        var value = choose_field(arc3SettingString, false);
 
         dc.setPenWidth(width*.01);
         var r = .485*width;
@@ -171,7 +177,11 @@ class Fields{
     function drawMiddleArch(dc as Dc) as Void{
         //var bodyBattery = getBodyBattery();
         //bodyBattery = bodyBattery.equals("") ? 0 as Number : bodyBattery.toNumber();
-        var value = 50;
+        //var value = 50;
+        var arc2SettingString = Settings.getFieldString(Settings.SettingArc2);
+        if (arc2SettingString.equals("None")) {return;}
+        var value = choose_field(arc2SettingString, false);
+        if (value == null) {return;}
         dc.setPenWidth(width*.0155);
         var r = .45*width;
         var x =  .5*width;
@@ -185,7 +195,13 @@ class Fields{
     function drawInnerArch(dc as Dc) as Void{
         //var bodyBattery = getBodyBattery();
         //bodyBattery = bodyBattery.equals("") ? 0 as Number : bodyBattery.toNumber();
-        var value = 50;
+        //var value = 50;
+        var arc1SettingString = Settings.getFieldString(Settings.SettingArc1);
+        if (arc1SettingString.equals("None")) {return;}
+        var value = choose_field(arc1SettingString, false);
+        if (value == null) {return;}
+
+
         dc.setPenWidth(width*.005);
         var r = .435*width;
         var x =  .5*width;
@@ -198,9 +214,14 @@ class Fields{
 
 
     function drawBattery(dc as Dc) as Void {
+        var batterySettingString = Settings.getFieldString(Settings.SettingRefField);
+        if (batterySettingString.equals("None")) {return;}
+        var batteryValue = choose_field(batterySettingString, false);
+        if (batteryValue == null) {return;}
+
         dc.setPenWidth(1);
-        var stats = System.getSystemStats();
-        var battery = stats.battery;
+        //var stats = System.getSystemStats();
+        //var battery = stats.battery;
     
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
     
@@ -212,76 +233,72 @@ class Fields{
         dc.fillRectangle(_x + w_body, _y, w_tip, h_body);    // end of battery space
     
         // battery level in red when under 20%
-        if (battery <= 20) {
+        if (batteryValue <= 20) {
             dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
         } else {
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         }
-        var fillWidth = (battery / 100.0) * w_body;
+        var fillWidth = (batteryValue / 100.0) * w_body;
         dc.fillRectangle(_x, _y, fillWidth, h_body);
     }
     
 
     function getFieldsString() {
         var field1SettingString = Settings.getFieldString(Settings.SettingField1);
-        var field1Value = choose_field(field1SettingString);
+        var field1Value = choose_field(field1SettingString, true);
         var field2SettingString = Settings.getFieldString(Settings.SettingField2);
-        var field2Value = choose_field(field2SettingString);
+        var field2Value = choose_field(field2SettingString, true);
         var field3SettingString = Settings.getFieldString(Settings.SettingField3);
-        var field3Value = choose_field(field3SettingString);
+        var field3Value = choose_field(field3SettingString, true);
         var fieldsString = extendString(addSeperator(field1Value, field2Value, field3Value));
         return fieldsString;
     }
         
+    function choose_field(settingString as String, typeString as Boolean) {
+    // Dictionary: "fieldName" => [ function, padLength, padChar ]
+    var config = {
+        "Calories" => [getCalories(), 5, "0"],
+        "Steps"  => [getSteps(), 5, "0"],
+        "Active Minutes This Week" => [getActiveMinutes(), 3, "0"],
+        "Stress Level" => [getStressLevel(), 3, "0"],
+        "Body Battery" => [getBodyBattery(), 3, "0"],
+        "Battery Level" => [getBatteryLevel(), 3, "0"],
+        "Calories Percentage" => [getCaloriesProgress(), 3, "0"],
+        "Steps Percentage" => [getStepsProgress(), 3, "0"],
+        "Date" => [getDate(), 5, "0"],
+        "Time" => [getTime(), 5, "0"],
+        "Heart Rate" => [getHeartRate(), 3, "0"],
+        "None" => [null, 0, "0"]
+    };
 
-    function choose_field(settingString) as String{
-        var settingValue;
-        
-        if (settingString.equals("Calories")) {
-            settingValue =  padLeft(getCalories(), 5, "0");
-        } 
-        if (settingString.equals("Steps")) {
-            settingValue =  padLeft(getSteps(), 3, "0");
-        } 
-        if (settingString.equals("Active Minutes This Week")) {
-            settingValue =  padLeft(getActiveMinutes(), 3, "0");
-        } 
-        else if (settingString.equals("Stress Level")) {
-            settingValue = padLeft(getStressLevel(), 3, "0");
-        }
-        else if (settingString.equals("Body Battery")) {
-            settingValue = padLeft(getBodyBattery(), 3, "0");
-        }
-        else if (settingString.equals("Calories Percentage")) {
-            settingValue = padLeft(getCaloriesProgress(), 3, "0");
-        }
-        else if (settingString.equals("Steps Percentage")) {
-            settingValue = padLeft(getStepsProgress(), 3, "0");
-        }
-        else if (settingString.equals("Date")) {
-            settingValue = padLeft(getDate(), 5, "0");
-        }
-        else if (settingString.equals("Time")) {
-            settingValue = padLeft(getTime(), 5, "0");
-        }
-        else if (settingString.equals("Heart Rate")) {
-            settingValue = padLeft(getHeartRate(), 3, "0");
-        }
-        else if (settingString.equals("None")) {
-            settingValue = "";
-        }
-        else {
-            settingValue = "";
-        }
-        return settingValue;
+    var cfg = config[settingString];
+
+    // If not found, act like "None"
+    if (cfg == null) {
+        return typeString ? "" : 0;
     }
+
+    // Handle "None" specially
+    if (settingString == "None") {
+        return typeString ? "" : 0;
+    }
+
+    // Call the function in the first array slot
+    var rawValue = cfg[0];
+
+    if (typeString) {
+        return padLeft(rawValue, cfg[1], cfg[2]);
+    } else {
+        Log.debug("settingString " + settingString);
+        Log.debug("rawValue " + rawValue);
+        return rawValue;
+    }
+}
 
 
     function update_fields(dc as Dc) as Void{
-        drawFieldsString(dc);
-        if (Settings.batterySetting) { 
-            drawBattery(dc);
-        }
+        drawFieldsString(dc); 
+        drawBattery(dc);
         drawOuterArch(dc);
         drawMiddleArch(dc);
         drawInnerArch(dc);
@@ -290,9 +307,8 @@ class Fields{
 
 
 // to do:
-// draw hal with smaller rim and grey reflections
-// three arches for % measures
-// Settings & menu for arches (None, is no arch)
-// delete body batery setting everywhere
-
+// draw hal with monkey c & integrate in animation
+// upload reflections bitmap
+// make trigger fied choosable
+// make threshold number input more variable
 
