@@ -3,32 +3,20 @@ import Toybox.WatchUi;
 import Toybox.Math;
 import Toybox.Lang;
 import Toybox.System;
+import Toybox.Graphics;
+
 
 class BackgroundAnimation {
-    private var imageIndex = 0;
     private var timer;
-    private var currentImage;
+    private var halIndex = 0;
     var isAnimating = false;
     var timerTriggered = false;
     private var direction = 1; // 1 forward, -1 backward
+    private var hal = new HAL();
 
     function drawBackground(dc) {
-
-        if (currentImage == null) {
-            currentImage = loadImage(imageIndex);
-        }
-        dc.drawBitmap(0, 0, currentImage);
+        hal.draw_hal(dc, halIndex);
     }
-
-    function loadImage(index) {
-        if (index == 0) { return Application.loadResource(Rez.Drawables.Pic0) as BitmapResource; }
-        if (index == 1) { return Application.loadResource(Rez.Drawables.Pic1) as BitmapResource; }
-        if (index == 2) { return Application.loadResource(Rez.Drawables.Pic2) as BitmapResource; }
-        if (index == 3) { return Application.loadResource(Rez.Drawables.Pic3) as BitmapResource; }
-
-        return null;
-    }
-
 
     function setAnimationTimer() {
        if (timer == null) {
@@ -63,12 +51,10 @@ class BackgroundAnimation {
         if (stressLevel < Settings.stressScoreSetting) {
             stopAnimation();
             // free the previous image to save memory
-            currentImage = null;
-            currentImage = Application.loadResource(Rez.Drawables.Pic0) as BitmapResource;
+            halIndex = 0;
         } else {
             startAnimation();
         }
-
     }
 
     function startAnimation() {
@@ -91,17 +77,13 @@ class BackgroundAnimation {
     }
 
     function switchBackground() as Void {
-        // free the previous image to save memory
-        currentImage = null;
-        imageIndex += direction;
+        halIndex += direction;
 
-        if (imageIndex == 3) {
+        if (halIndex == 3) {
             direction = -1;
-        } else if (imageIndex == 0) {
+        } else if (halIndex == 0) {
             direction = 1;
         }
-
-        currentImage = loadImage(imageIndex);
         restartAnimationTimer();
         timerTriggered = true;
         WatchUi.requestUpdate(); 
