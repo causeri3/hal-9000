@@ -10,7 +10,6 @@ class hal9000View extends WatchUi.WatchFace{
 
     function initialize() {
         WatchFace.initialize();
-        // Fields.initialize();
         fields = new Fields();
         animation = new BackgroundAnimation();
         sleep = false;
@@ -20,6 +19,7 @@ class hal9000View extends WatchUi.WatchFace{
 
     // Load your resources here
     function onLayout(dc as Dc) as Void {
+        Dimensions.init(dc);
         fields.init(dc);
         //setLayout(Rez.Layouts.WatchFace(dc));
     }
