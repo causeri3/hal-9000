@@ -3,12 +3,19 @@ import Toybox.WatchUi;
 import Toybox.Lang;
 
 
+module Dimensions {
+    var width, height, cx;
+
+    function init(dc as Dc){
+        width = dc.getWidth();
+        height = dc.getHeight(); 
+        cx = width / 2;
+    }
+}
+
 class Fields{
     //private var font_width; 
     private var font_size; 
-    private var width;
-    private var height;
-    private var cx; 
     private var cy; 
     private var r; 
     private var angles; 
@@ -16,12 +23,9 @@ class Fields{
     private var fonts;
     
     function init(dc as Dc){
-        width = dc.getWidth();
-        height = dc.getHeight(); 
         //font_width = dc.getWidth()*.054;
-        font_size = dc.getWidth()*.07;
-        cx = width / 2;
-        cy = cx - (font_size/2);
+        font_size = Dimensions.width*.07;
+        cy = Dimensions.cx - (font_size/2);
         r = cy - (font_size * 1.15);
 
         angles = [
@@ -127,11 +131,11 @@ class Fields{
             if (char.equals(" ") || char.equals("•")){
                 font = Graphics.FONT_SMALL;
                 y = cy + (r-(font_size/5)) * Math.cos(radians);
-                x = cx + (r-(font_size/5)) * Math.sin(radians);
+                x = Dimensions.cx + (r-(font_size/5)) * Math.sin(radians);
             }
             else{
                 font = fonts[i];
-                x = cx + r * Math.sin(radians);
+                x = Dimensions.cx + r * Math.sin(radians);
                 y = cy + r * Math.cos(radians);
             }
             dc.drawText(x, y, font, char, Graphics.TEXT_JUSTIFY_CENTER);
@@ -164,10 +168,10 @@ class Fields{
         if (arc3SettingString.equals("None")) {return;}
         var value = choose_field(arc3SettingString, false);
 
-        dc.setPenWidth(width*.01);
-        var r = .485*width;
-        var x =  .5*width;
-        var y = .5*width;
+        dc.setPenWidth(Dimensions.width*.01);
+        var r = .485*Dimensions.width;
+        var x =  .5*Dimensions.width;
+        var y = .5*Dimensions.width;
         var colour = Graphics.COLOR_WHITE;
         
         drawCurvedArc(dc, x, y, r, value, colour);
@@ -182,10 +186,10 @@ class Fields{
         if (arc2SettingString.equals("None")) {return;}
         var value = choose_field(arc2SettingString, false);
         if (value == null) {return;}
-        dc.setPenWidth(width*.0155);
-        var r = .45*width;
-        var x =  .5*width;
-        var y = .5*width;
+        dc.setPenWidth(Dimensions.width*.0155);
+        var r = .45*Dimensions.width;
+        var x =  .5*Dimensions.width;
+        var y = .5*Dimensions.width;
         var colour = 0xaaaaaa;
         
         drawCurvedArc(dc, x, y, r, value, colour);
@@ -202,10 +206,10 @@ class Fields{
         if (value == null) {return;}
 
 
-        dc.setPenWidth(width*.005);
-        var r = .435*width;
-        var x =  .5*width;
-        var y = .5*width;
+        dc.setPenWidth(Dimensions.width*.005);
+        var r = .435*Dimensions.width;
+        var x =  .5*Dimensions.width;
+        var y = .5*Dimensions.width;
         var colour = 0x55aaff;
         //var colour = Graphics.COLOR_WHITE;
         drawCurvedArc(dc, x, y, r, value, colour);
@@ -225,11 +229,11 @@ class Fields{
     
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
     
-        var _x = .75*width;
-        var _y = .45*height;
-        var w_body = .12*width;
-        var h_body = .02*height;
-        var w_tip = .008*width;
+        var _x = .75*Dimensions.width;
+        var _y = .45*Dimensions.height;
+        var w_body = .12*Dimensions.width;
+        var h_body = .02*Dimensions.height;
+        var w_tip = .008*Dimensions.width;
         dc.fillRectangle(_x + w_body, _y, w_tip, h_body);    // end of battery space
     
         // battery level in red when under 20%
@@ -256,47 +260,38 @@ class Fields{
         
     function choose_field(settingString as String, typeString as Boolean) {
     // Dictionary: "fieldName" => [ function, padLength, padChar ]
-    var config = {
-        "Calories" => [getCalories(), 5, "0"],
-        "Steps"  => [getSteps(), 5, "0"],
-        "Active Minutes This Week" => [getActiveMinutes(), 3, "0"],
-        "Stress Level" => [getStressLevel(), 3, "0"],
-        "Body Battery" => [getBodyBattery(), 3, "0"],
-        "Battery Level" => [getBatteryLevel(), 3, "0"],
-        "Calories Percentage" => [getCaloriesProgress(), 3, "0"],
-        "Steps Percentage" => [getStepsProgress(), 3, "0"],
-        "Date" => [getDate(), 5, "0"],
-        "Time" => [getTime(), 5, "0"],
-        "Heart Rate" => [getHeartRate(), 3, "0"],
-        "None" => [null, 0, "0"]
-    };
+        var config = {
+            "Calories" => [getCalories(), 5, "0"],
+            "Steps"  => [getSteps(), 5, "0"],
+            "Active Minutes This Week" => [getActiveMinutes(), 3, "0"],
+            "Stress Level" => [getStressLevel(), 3, "0"],
+            "Body Battery" => [getBodyBattery(), 3, "0"],
+            "Battery Level" => [getBatteryLevel(), 3, "0"],
+            "Calories Percentage" => [getCaloriesProgress(), 3, "0"],
+            "Steps Percentage" => [getStepsProgress(), 3, "0"],
+            "Date" => [getDate(), 5, "0"],
+            "Time" => [getTime(), 5, "0"],
+            "Heart Rate" => [getHeartRate(), 3, "0"],
+            "None" => [null, 0, "0"]
+        };
 
-    var cfg = config[settingString];
+        var cfg = config[settingString] as Array;
 
-    // If not found, act like "None"
-    if (cfg == null) {
-        return typeString ? "" : 0;
+        if (settingString == "None") {
+            return typeString ? "" : 0;
+        }
+
+        var rawValue = cfg[0];
+
+        if (typeString) {
+            return padLeft(rawValue, cfg[1], cfg[2]);
+        } else {
+            return rawValue;
+        }
     }
-
-    // Handle "None" specially
-    if (settingString == "None") {
-        return typeString ? "" : 0;
-    }
-
-    // Call the function in the first array slot
-    var rawValue = cfg[0];
-
-    if (typeString) {
-        return padLeft(rawValue, cfg[1], cfg[2]);
-    } else {
-        Log.debug("settingString " + settingString);
-        Log.debug("rawValue " + rawValue);
-        return rawValue;
-    }
-}
-
 
     function update_fields(dc as Dc) as Void{
+        //draw_hal(dc);
         drawFieldsString(dc); 
         drawBattery(dc);
         drawOuterArch(dc);
@@ -306,9 +301,65 @@ class Fields{
 }
 
 
+
+class HAL{
+    private var colours as Array<Number>?;
+    var circle_distances as Array<Array<Number>>?;
+    
+    function initialize(){
+        colours = [
+        0x000000, 0xAAAAAA, 0x000000, 0x550000,
+        0xAA0000, 0xFF0000, 0xFF5500, 0xFFFFFF, 
+        0xFFAA00, 0xFFAA55, 0xFFFFAA, 0xFFFFFF
+        ];
+        var dist_0 = [3, 3, 168, 75, 15, 50, 30, 3, 30, 15, 25, 10];
+        var dist_1 = [3, 3, 168, 60, 15, 60, 35, 3, 30, 15, 25, 10];
+        var dist_2 = [3, 3, 168, 35, 25, 70, 40, 3, 30, 15, 25, 10];
+        var dist_3 = [3, 3, 118, 60, 35, 80, 45, 3, 30, 15, 25, 10];
+        circle_distances = [dist_0, dist_1, dist_2, dist_3];
+    }
+    
+    function draw_hal(dc as Dc, index as Number){
+        // black background
+        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
+        dc.clear();
+
+        var dist = circle_distances[index];
+
+        var sumDist = 427; //(sum of dist)
+
+        var scale  = (Dimensions.width * 0.5 / sumDist);
+        Log.debug("SCALE" + scale);
+        Log.debug("WIDTH " + Dimensions.width);
+        var r = (sumDist * scale);
+        Log.debug("R" + r);
+
+        // Draw from outside to inside
+        for (var i = 0; i < colours.size() && i < dist.size(); i += 1) {
+            var col = colours[i] as Number;
+            var shrink = (dist[i] * scale);
+            Log.debug("SHRINK" + shrink);
+
+            // Set foreground to ring color, keep background black
+            dc.setColor(col, Graphics.COLOR_BLACK);
+            // Filled disc for this ring
+            if (r > 0) {
+                dc.fillCircle(Dimensions.cx, Dimensions.cx, r);
+            }
+
+            r -= shrink;
+            if (r <= 0) {
+                break;
+            }
+        }
+        dc.drawBitmap(0, 0, Application.loadResource(Rez.Drawables.Reflections));    
+    }
+    }
+
+
+
 // to do:
-// draw hal with monkey c & integrate in animation
-// upload reflections bitmap
+// adpot arc distances
+// all fonts and bitmaps, drawables.xml for all ressources
 // make trigger fied choosable
 // make threshold number input more variable
-
