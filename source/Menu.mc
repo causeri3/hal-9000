@@ -110,7 +110,7 @@ class MenuDelegate extends WatchUi.Menu2InputDelegate {
 
   function onSelect(item) {
     var id = item.getId();
-    var arcKeys = [0, 2, 6, 8, 9, 11]; // only none, stress, body battery, % calories, % steps, battery level  
+    var arcKeys = [0, 2, 6, 7, 9, 11]; // only none, stress, body battery, % calories, % steps, battery level  
     var refKeys = [0, 6, 8, 9, 11]; // only none, body battery, % calories, % steps, battery level    
   
     if (id.equals("Field1")) {
