@@ -13,14 +13,21 @@ class hal9000View extends WatchUi.WatchFace{
         fields = new Fields();
         animation = new BackgroundAnimation();
         sleep = false;
-        Log.debug("hal9000View initialized");
 
     }
 
     // Load your resources here
     function onLayout(dc as Dc) as Void {
+        //Log.debug("onLayout");
+        //Log.debug("Before init Dimensions");
+        //Log.showMemoryUsage();
         Dimensions.init(dc);
+        //Log.debug("Before init fields");
+        //Log.showMemoryUsage();
         fields.init(dc);
+        //Log.debug("After init fields");
+        //Log.showMemoryUsage();
+        HAL.init();
         //setLayout(Rez.Layouts.WatchFace(dc));
     }
 
@@ -29,7 +36,7 @@ class hal9000View extends WatchUi.WatchFace{
     // the state of this View and prepare it to be shown. This includes
     // loading resources into memory.
     function onShow() as Void {
-        Log.debug("In onShow");
+        Log.debug("onShow");
         // bugfix, if onShow and in sleep: timer.start() leads to 
         // Error: Permission Required
         // Details: "Symbol 'start' not available to 'Watch Face'"
@@ -41,17 +48,19 @@ class hal9000View extends WatchUi.WatchFace{
 
 
     function onUpdate(dc as Dc) as Void {
-            if (Settings.animationSetting) { 
-                Log.debug("Animation is set on ON");
-                ifAnimationOn(dc);
+        //Log.debug("onUpdate");
+        //Log.showMemoryUsage();
+        if (Settings.animationSetting) { 
+            //Log.debug("Animation is set on ON");
+            ifAnimationOn(dc);
+        }
+        else{
+            //Log.debug("Animation is set on OFF");
+            if (animation.isAnimating) {
+                animation.stopAnimation();
             }
-            else{
-                Log.debug("Animation is set on OFF");
-                if (animation.isAnimating) {
-                    animation.stopAnimation();
-                }
-                basicUpdate(dc);
-            }
+            basicUpdate(dc);
+        }
     }
 
     // Called when this View is removed from the screen. Save the
@@ -80,31 +89,19 @@ class hal9000View extends WatchUi.WatchFace{
     }
 
     hidden function ifAnimationOn(dc) as Void {
-        if(animation.timerTriggered && animation.isAnimating){
-            animation.drawBackground(dc);
-            fields.update_fields(dc);
-            Log.debug("Timer Triggered Update - Animation");
-            animation.timerTriggered = false;
-        }
-        else if((!animation.timerTriggered && !animation.isAnimating) || sleep){
-            basicUpdate(dc);
-        }
-        else{
-            Log.debug("Don't Update - Animation Runs on Timer");
-        }
-
         if (!sleep){
             animation.updateAnimationState();
         }
-        else{
-            Log.debug("Animation is stopped due to sleep");
-        }
+        // I thought I would be smart by only drawing the background if the timer doesnt do it, 
+        // but it led to a black screen for mome milliseconds on the forerunner, fenix and enduro models
+        // appearently they clear the screen no matter what on update
+        basicUpdate(dc);
     }
 
     hidden function basicUpdate(dc) as Void {
-        animation.drawBackground(dc);
+        HAL.draw_hal(dc, animation.halIndex);
         fields.update_fields(dc);
-        Log.debug("Regular Update - No Animation");
+        //Log.debug("Regular Update - No Animation");
     }
 
 }

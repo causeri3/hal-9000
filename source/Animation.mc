@@ -8,28 +8,23 @@ import Toybox.Graphics;
 
 class BackgroundAnimation {
     private var timer;
-    private var halIndex = 0;
+    var halIndex = 0;
     var isAnimating = false;
     var timerTriggered = false;
     private var direction = 1; // 1 forward, -1 backward
-    private var hal = new HAL();
-
-    function drawBackground(dc) {
-        hal.draw_hal(dc, halIndex);
-    }
 
     function setAnimationTimer() {
        if (timer == null) {
            timer = new Timer.Timer();
        }
-        Log.debug("In setAnimationTimer: " + timer.toString());
+        //Log.debug("In setAnimationTimer: " + timer.toString());
     }
     function random(min, max) {
         return min + Math.rand() % (max-min);   
     } 
 
     function restartAnimationTimer() {
-        Log.debug("restartAnimationTimer() is being called.");
+        //Log.debug("restartAnimationTimer() is being called.");
 
         if (timer != null) {
             //Log.debug("Timer object: " + timer.toString());
@@ -39,7 +34,7 @@ class BackgroundAnimation {
             //Log.debug("New random_intervall: " + random_intervall);
             timer.start(method(:switchBackground), random_intervall, false); 
         } else {
-            Log.debug("Timer is null in restartAnimationTimer()");
+            //Log.debug("Timer is null in restartAnimationTimer()");
         }
     }
 
@@ -58,7 +53,7 @@ class BackgroundAnimation {
     }
 
     function startAnimation() {
-        Log.debug("in startAnimation: isAnimating is " + isAnimating.toString());
+        //.debug("in startAnimation: isAnimating is " + isAnimating.toString());
 
         if (timer != null && !isAnimating) {
             isAnimating = true;
@@ -67,8 +62,8 @@ class BackgroundAnimation {
     }
 
     function stopAnimation() {
-        Log.debug("in stopAnimation: isAnimating is " + isAnimating.toString());
-        Log.debug("timer is null: " + (timer == null).toString());
+        //Log.debug("in stopAnimation: isAnimating is " + isAnimating.toString());
+        //Log.debug("timer is null: " + (timer == null).toString());
         if (timer != null && isAnimating) {
             isAnimating = false;
             timer.stop();
@@ -77,13 +72,15 @@ class BackgroundAnimation {
     }
 
     function switchBackground() as Void {
-        halIndex += direction;
 
         if (halIndex == 3) {
             direction = -1;
         } else if (halIndex == 0) {
             direction = 1;
         }
+        
+        halIndex += direction;
+
         restartAnimationTimer();
         timerTriggered = true;
         WatchUi.requestUpdate(); 
