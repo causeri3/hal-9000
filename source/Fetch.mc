@@ -114,7 +114,7 @@ function getLatestStressLevelFromSensorHistory() as Number or Null {
 
 function getDate() as String {
     var now = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
-    var dateString = Lang.format("$1$|$2$", [now.day.format("%02d"), now.month.format("%02d")]);
+    var dateString = Lang.format("$1$.$2$", [now.day.format("%02d"), now.month.format("%02d")]);
     return dateString;
 }
 

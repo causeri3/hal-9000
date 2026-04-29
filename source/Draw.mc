@@ -89,13 +89,13 @@ class Fields{
 
     function addSeperator(value1 as String, value2 as String, value3 as String) as String {
         if ((value1.length() > 0) && (value2.length() > 0)){
-            value1 += "•";
+            value1 += "|";
             }
         if ((value2.length() > 0) && (value3.length() > 0)){
-            value2 += "•";
+            value2 += "|";
         }
         if ((value1.length() > 0) && (value2.length() == 0) && (value3.length() > 0)){
-            value1 += "•";
+            value1 += "|";
         }
         return value1 + value2 + value3;
     }
@@ -387,9 +387,7 @@ function drawReflections(dc as Dc) as Void {
 
 
 // // to do:
-// second battery reflection
 // // adpot arc distances (from circles to arc)
-// make outer arc ring a reflection and draw over black
 // // all fonts and bitmaps, drawables.xml for all ressources
 // // make trigger fied choosable
 // // make threshold number input more variable
