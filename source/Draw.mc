@@ -14,16 +14,14 @@ module Dimensions {
 }
 
 class Fields{
-    //private var font_width; 
     private var font_size; 
     private var cy; 
     private var r; 
     private var angles; 
-    //private var angle_step_size = 8.4375;
     private var fonts;
     
     function init(dc as Dc){
-        //font_width = dc.getWidth()*.054;
+        //Log.debug("Init Fields: Load Fonts");
         font_size = Dimensions.width*.07;
         cy = Dimensions.cx - (font_size/2);
         r = cy - (font_size * 1.15);
@@ -47,6 +45,8 @@ class Fields{
             300.9375, 
             292.5];
 
+        //Log.debug("Before Load Fonts");
+        //Log.showMemoryUsage();
         fonts = [
             WatchUi.loadResource(Rez.Fonts.font0),
             WatchUi.loadResource(Rez.Fonts.font1),
@@ -66,6 +66,8 @@ class Fields{
             WatchUi.loadResource(Rez.Fonts.font15),
             WatchUi.loadResource(Rez.Fonts.font16)
         ];
+        //Log.debug("After Load Fonts");
+        //Log.showMemoryUsage();
 
         Settings.getProperties();
     }
@@ -117,7 +119,7 @@ class Fields{
         var fieldsString = getFieldsString();
         var x;
         var y;
-        Log.debug(fieldsString);
+        //Log.debug(fieldsString);
 
         dc.setColor(0xff0000, Graphics.COLOR_TRANSPARENT);
 
@@ -149,7 +151,7 @@ class Fields{
                           r as Number, 
                           percentage as Number, 
                           colour as Number) {
-        if (percentage == 0){return;}
+        if (percentage == null || percentage == 0) { return; }
         var span = 360.0 * ((100-percentage) / 100.0);
         var startAngle = 270 - (span / 2);
         var endAngle = 270 + (span / 2);
@@ -160,9 +162,6 @@ class Fields{
 
 
     function drawOuterArch(dc as Dc) as Void{
-        //var bodyBattery = getBodyBattery();
-        //bodyBattery = bodyBattery.equals("") ? 0 as Number : bodyBattery.toNumber();
-        //var value = 50;
 
         var arc3SettingString = Settings.getFieldString(Settings.SettingArc3);
         if (arc3SettingString.equals("None")) {return;}
@@ -179,15 +178,13 @@ class Fields{
     }
 
     function drawMiddleArch(dc as Dc) as Void{
-        //var bodyBattery = getBodyBattery();
-        //bodyBattery = bodyBattery.equals("") ? 0 as Number : bodyBattery.toNumber();
-        //var value = 50;
+
         var arc2SettingString = Settings.getFieldString(Settings.SettingArc2);
         if (arc2SettingString.equals("None")) {return;}
         var value = choose_field(arc2SettingString, false);
         if (value == null) {return;}
         dc.setPenWidth(Dimensions.width*.0155);
-        var r = .45*Dimensions.width;
+        var r = .465*Dimensions.width;
         var x =  .5*Dimensions.width;
         var y = .5*Dimensions.width;
         var colour = 0xaaaaaa;
@@ -197,9 +194,7 @@ class Fields{
     }
 
     function drawInnerArch(dc as Dc) as Void{
-        //var bodyBattery = getBodyBattery();
-        //bodyBattery = bodyBattery.equals("") ? 0 as Number : bodyBattery.toNumber();
-        //var value = 50;
+
         var arc1SettingString = Settings.getFieldString(Settings.SettingArc1);
         if (arc1SettingString.equals("None")) {return;}
         var value = choose_field(arc1SettingString, false);
@@ -207,34 +202,38 @@ class Fields{
 
 
         dc.setPenWidth(Dimensions.width*.005);
-        var r = .435*Dimensions.width;
-        var x =  .5*Dimensions.width;
+        var r = .45*Dimensions.width;
+        var x = .5*Dimensions.width;
         var y = .5*Dimensions.width;
         var colour = 0x55aaff;
-        //var colour = Graphics.COLOR_WHITE;
         drawCurvedArc(dc, x, y, r, value, colour);
 
     }
 
+    function drawBatteryRight(dc as Dc) as Void {
+        drawBattery(dc, .75*Dimensions.width, Settings.SettingRefField);
+    }
 
-    function drawBattery(dc as Dc) as Void {
-        var batterySettingString = Settings.getFieldString(Settings.SettingRefField);
+    // function drawBatteryLeft(dc as Dc) as Void {
+    //     drawBattery(dc, .122*Dimensions.width, Settings.SettingRefField);
+    // }
+
+
+    function drawBattery(dc as Dc, x, SettingRefField) as Void {
+        var batterySettingString = Settings.getFieldString(SettingRefField);
         if (batterySettingString.equals("None")) {return;}
         var batteryValue = choose_field(batterySettingString, false);
         if (batteryValue == null) {return;}
 
         dc.setPenWidth(1);
-        //var stats = System.getSystemStats();
-        //var battery = stats.battery;
     
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-    
-        var _x = .75*Dimensions.width;
-        var _y = .45*Dimensions.height;
+
+        var y = .45*Dimensions.height;
         var w_body = .12*Dimensions.width;
         var h_body = .02*Dimensions.height;
         var w_tip = .008*Dimensions.width;
-        dc.fillRectangle(_x + w_body, _y, w_tip, h_body);    // end of battery space
+        dc.fillRectangle(x + w_body, y, w_tip, h_body);    // end of battery space
     
         // battery level in red when under 20%
         if (batteryValue <= 20) {
@@ -243,7 +242,7 @@ class Fields{
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         }
         var fillWidth = (batteryValue / 100.0) * w_body;
-        dc.fillRectangle(_x, _y, fillWidth, h_body);
+        dc.fillRectangle(x, y, fillWidth, h_body);
     }
     
 
@@ -259,7 +258,6 @@ class Fields{
     }
         
     function choose_field(settingString as String, typeString as Boolean) {
-    // Dictionary: "fieldName" => [ function, padLength, padChar ]
         var config = {
             "Calories" => [getCalories(), 5, "0"],
             "Steps"  => [getSteps(), 5, "0"],
@@ -291,9 +289,9 @@ class Fields{
     }
 
     function update_fields(dc as Dc) as Void{
-        //draw_hal(dc);
         drawFieldsString(dc); 
-        drawBattery(dc);
+        drawBatteryRight(dc);
+        //drawBatteryLeft(dc);
         drawOuterArch(dc);
         drawMiddleArch(dc);
         drawInnerArch(dc);
@@ -302,47 +300,75 @@ class Fields{
 
 
 
-class HAL{
-    private var colours as Array<Number>?;
+module HAL{
+    var colours as Array<Number>?;
     var circle_distances as Array<Array<Number>>?;
-    
-    function initialize(){
+    function init(){
         colours = [
-        0x000000, 0xAAAAAA, 0x000000, 0x550000,
-        0xAA0000, 0xFF0000, 0xFF5500, 0xFFFFFF, 
-        0xFFAA00, 0xFFAA55, 0xFFFFAA, 0xFFFFFF
+        0x000000, 0x550000, 
+        0xAA0000, 0xFF0000, 
+        0xFF5500, 0xFFFFFF, 
+        0xFFAA00, 0xFFAA55, 
+        0xFFFFAA, 0xFFFFFF
         ];
-        var dist_0 = [3, 3, 168, 75, 15, 50, 30, 3, 30, 15, 25, 10];
-        var dist_1 = [3, 3, 168, 60, 15, 60, 35, 3, 30, 15, 25, 10];
-        var dist_2 = [3, 3, 168, 35, 25, 70, 40, 3, 30, 15, 25, 10];
-        var dist_3 = [3, 3, 118, 60, 35, 80, 45, 3, 30, 15, 25, 10];
+        var dist_0 = [168, 75, 15, 50, 30, 3, 30, 15, 25, 10];
+        var dist_1 = [168, 60, 15, 60, 35, 3, 30, 15, 25, 10];
+        var dist_2 = [168, 35, 25, 70, 40, 3, 30, 15, 25, 10];
+        var dist_3 = [118, 60, 35, 80, 45, 3, 30, 15, 25, 10];
         circle_distances = [dist_0, dist_1, dist_2, dist_3];
     }
+
+
+function drawReflections(dc as Dc) as Void {
+
+    var rOuter = Dimensions.width * .85;
+    var cyOuter =  Dimensions.width;
+    var cyInner =  Dimensions.width * .6;
+    var rInner = Dimensions.width * .25;
+
+    
+    dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+    dc.setPenWidth(Dimensions.width*.06);
+    dc.drawArc(Dimensions.cx, cyOuter, rOuter, Graphics.ARC_COUNTER_CLOCKWISE, 60, 75);
+    dc.setPenWidth(Dimensions.width*.055);
+    dc.drawArc(Dimensions.cx, cyOuter, rOuter, Graphics.ARC_COUNTER_CLOCKWISE, 80, 100);
+    dc.setPenWidth(Dimensions.width*.05);
+    dc.drawArc(Dimensions.cx, cyOuter, rOuter, Graphics.ARC_COUNTER_CLOCKWISE, 105, 120);
+
+    dc.setPenWidth(Dimensions.width*.02);   
+    dc.drawArc(Dimensions.cx, cyInner, rInner, Graphics.ARC_COUNTER_CLOCKWISE, 50, 60);
+    dc.drawArc(Dimensions.cx, cyInner, rInner, Graphics.ARC_COUNTER_CLOCKWISE, 70, 110);
+    dc.drawArc(Dimensions.cx, cyInner, rInner, Graphics.ARC_COUNTER_CLOCKWISE, 120, 130);
+
+    // cut off refelctions by black ring
+    dc.setPenWidth(Dimensions.width*.1);
+    dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
+    dc.drawArc(Dimensions.cx,  Dimensions.cx, .5*Dimensions.width, Graphics.ARC_CLOCKWISE, 180, 360);
+    // draw grey ring, for square watches
+    dc.setPenWidth(Dimensions.width*.005);
+    dc.setColor(0xAAAAAA, Graphics.COLOR_TRANSPARENT);
+    dc.drawArc(Dimensions.cx,  Dimensions.cx, .49*Dimensions.width, Graphics.ARC_COUNTER_CLOCKWISE, 360, 0);
+}
+
     
     function draw_hal(dc as Dc, index as Number){
         // black background
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
+        //Log.debug("Before drawing HAL");
+        //Log.showMemoryUsage();
         dc.clear();
-
         var dist = circle_distances[index];
 
         var sumDist = 427; //(sum of dist)
 
         var scale  = (Dimensions.width * 0.5 / sumDist);
-        Log.debug("SCALE" + scale);
-        Log.debug("WIDTH " + Dimensions.width);
         var r = (sumDist * scale);
-        Log.debug("R" + r);
 
         // Draw from outside to inside
         for (var i = 0; i < colours.size() && i < dist.size(); i += 1) {
             var col = colours[i] as Number;
             var shrink = (dist[i] * scale);
-            Log.debug("SHRINK" + shrink);
-
-            // Set foreground to ring color, keep background black
             dc.setColor(col, Graphics.COLOR_BLACK);
-            // Filled disc for this ring
             if (r > 0) {
                 dc.fillCircle(Dimensions.cx, Dimensions.cx, r);
             }
@@ -351,15 +377,21 @@ class HAL{
             if (r <= 0) {
                 break;
             }
+        //Log.debug("After drawing HAL");
+        //Log.showMemoryUsage();
         }
-        dc.drawBitmap(0, 0, Application.loadResource(Rez.Drawables.Reflections));    
+        drawReflections(dc);
     }
     }
 
 
 
-// to do:
-// adpot arc distances
-// all fonts and bitmaps, drawables.xml for all ressources
-// make trigger fied choosable
-// make threshold number input more variable
+// // to do:
+// second battery reflection
+// // adpot arc distances (from circles to arc)
+// make outer arc ring a reflection and draw over black
+// // all fonts and bitmaps, drawables.xml for all ressources
+// // make trigger fied choosable
+// // make threshold number input more variable
+// seperator dots prettier solution
+// 09 in minutes field not straig at all
