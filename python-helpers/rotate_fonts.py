@@ -1,7 +1,25 @@
 import os
 from PIL import Image, ImageDraw, ImageFont
 
-font_path = "/Users/username/Downloads/telegrama/outline font/telegrama_render.otf"
+# monospaced fonts
+font_path = "/Users/vanessacausemann/Downloads/erbos-draco-monospaced-nbp-font/ErbosDraco1StOpenNbpRegular-l5wX.ttf"
+font_path = "/Users/vanessacausemann/Downloads/de-valencia/De Valencia (beta).otf"
+
+font_path = "/Users/vanessacausemann/Downloads/telegrama/outline font/telegrama_render.otf"
+
+font_path = "/Users/vanessacausemann/Downloads/space-mono/SpaceMono-Regular.ttf"
+
+# too big
+font_path = "/Users/vanessacausemann/Downloads/axronic-font/Axronic-lxeDD.ttf"
+font_path = "/Users/vanessacausemann/Downloads/segment7-font/Segment7-4Gml.otf"
+font_path = "/Users/vanessacausemann/src/garmin/font_colours/LifeInSpace-MAVP.ttf"
+
+font_path = "/Users/vanessacausemann/Downloads/share-tech-mono.regular.ttf"
+
+
+font_path = "/Users/vanessacausemann/Downloads/space-mono/SpaceMono-Bold.ttf"
+
+
 
 output_dir = "output_fonts"
 
@@ -16,10 +34,23 @@ angles_min = [min_curve - i * step_size for i in range(int((fields_no-1)/2))]
 angles_max = [max_curve + i * step_size for i in range(int((fields_no-1)/2))]
 angles = angles_min + [360] + angles_max[::-1]
 
-characters = "0123456789:|"
+characters = "0123456789:|."
 
 
 os.makedirs(output_dir, exist_ok=True)
+
+
+def anchor_centered_crop(rotated):
+    # Crop symmetrically around the rotation center (== original text anchor)
+    # so the anchor stays at the geometric center of the returned image.
+    bbox = rotated.getbbox()
+    if bbox is None:
+        return rotated
+    acx, acy = rotated.width / 2, rotated.height / 2
+    half_w = int(max(acx - bbox[0], bbox[2] - acx))
+    half_h = int(max(acy - bbox[1], bbox[3] - acy))
+    return rotated.crop((int(acx - half_w), int(acy - half_h),
+                         int(acx + half_w), int(acy + half_h)))
 
 
 def get_global_max_bounds(font_sizes, angles):
@@ -34,7 +65,7 @@ def get_global_max_bounds(font_sizes, angles):
                 draw = ImageDraw.Draw(img)
                 draw.text((img.width // 2, img.height // 2), char, font=font, fill=(255, 255, 255, 255), anchor="mm")
                 rotated = img.rotate(angle, resample=Image.BICUBIC, expand=True)
-                cropped = rotated.crop(rotated.getbbox())
+                cropped = anchor_centered_crop(rotated)
 
                 global_max_width = max(global_max_width, cropped.width)
                 global_max_height = max(global_max_height, cropped.height)
@@ -51,7 +82,7 @@ def rotate_chars(font, size, angle):
         draw = ImageDraw.Draw(img)
         draw.text((img.width // 2, img.height // 2), char, font=font, fill=(255, 255, 255, 255), anchor="mm")
         rotated = img.rotate(angle, resample=Image.BICUBIC, expand=True)
-        cropped = rotated.crop(rotated.getbbox())
+        cropped = anchor_centered_crop(rotated)
         rotated_chars.append((char, cropped))
 
     return rotated_chars
@@ -87,7 +118,7 @@ def create_font_variant(angle, size, idx, global_max_width, global_max_height):
             "height": img.height,
             "xoffset": 0,
             "yoffset": 0,
-            "xadvance": img.width + 2,
+            "xadvance": img.width,
         })
         x += img.width + 2
 
