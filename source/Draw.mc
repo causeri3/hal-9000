@@ -21,10 +21,14 @@ class Fields{
     private var fonts;
     
     function init(dc as Dc){
+
         //Log.debug("Init Fields: Load Fonts");
         font_size = Dimensions.width*.07;
-        cy = Dimensions.cx - (font_size/2);
-        r = cy - (font_size * 1.15);
+        //cy = Dimensions.cx - (font_size/2);
+        //r = cy - (font_size * 1.15);
+        //r = Dimensions.cx - (font_size * 1.65);
+        r = Dimensions.cx - (font_size * 1.3);
+
 
         angles = [
             67.5, 
@@ -129,18 +133,22 @@ class Fields{
 
             // reverse string
             var char = fieldsString.substring(fieldsString.length() - 1 - i, fieldsString.length() - i);
-
-            if (char.equals(" ") || char.equals("•")){
+            x = Dimensions.cx + r * Math.sin(radians);
+            y = Dimensions.cx + r * Math.cos(radians);
+            
+            if (char.equals(" ")){
                 font = Graphics.FONT_SMALL;
-                y = cy + (r-(font_size/5)) * Math.cos(radians);
-                x = Dimensions.cx + (r-(font_size/5)) * Math.sin(radians);
             }
+
             else{
                 font = fonts[i];
-                x = Dimensions.cx + r * Math.sin(radians);
-                y = cy + r * Math.cos(radians);
             }
-            dc.drawText(x, y, font, char, Graphics.TEXT_JUSTIFY_CENTER);
+
+            var boxW = (font_size * 1.1579).toNumber();
+            var boxH = (font_size * 1.1579).toNumber();
+
+            //dc.drawText(x, y, font, char, Graphics.TEXT_JUSTIFY_LEFT);
+            dc.drawText(x, y, font, char, Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER);
         }
     }
 
@@ -158,6 +166,11 @@ class Fields{
 
         dc.setColor(colour, Graphics.COLOR_TRANSPARENT);
         dc.drawArc(x, y, r, Graphics.ARC_CLOCKWISE, startAngle, endAngle);
+
+        //dc.setColor(0x00ff00, Graphics.COLOR_TRANSPARENT);
+        //dc.drawArc(Dimensions.cx, Dimensions.cx, r-font_size, Graphics.ARC_CLOCKWISE, 0, 360);
+
+
     }
 
 
@@ -388,8 +401,5 @@ function drawReflections(dc as Dc) as Void {
 
 // // to do:
 // // adpot arc distances (from circles to arc)
-// // all fonts and bitmaps, drawables.xml for all ressources
 // // make trigger fied choosable
 // // make threshold number input more variable
-// seperator dots prettier solution
-// 09 in minutes field not straig at all
