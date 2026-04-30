@@ -1,17 +1,17 @@
-info face="LifeInSpace-MAVP" size=22 bold=0 italic=0 charset="" unicode=1 stretchH=100 smooth=1 aa=1 padding=1,1,1,1 spacing=1,1
-common lineHeight=34 base=0 scaleW=442 scaleH=34 pages=1 packed=0
+info face="SpaceMono-Bold" size=22 bold=0 italic=0 charset="" unicode=1 stretchH=100 smooth=1 aa=1 padding=1,1,1,1 spacing=1,1
+common lineHeight=40 base=0 scaleW=520 scaleH=40 pages=1 packed=0
 page id=0 file="font11.png"
 chars count=13
-char id=48 x=0 y=0 width=32 height=34 xoffset=0 yoffset=0 xadvance=34 page=0 chnl=0
-char id=49 x=34 y=0 width=32 height=34 xoffset=0 yoffset=0 xadvance=34 page=0 chnl=0
-char id=50 x=68 y=0 width=32 height=34 xoffset=0 yoffset=0 xadvance=34 page=0 chnl=0
-char id=51 x=102 y=0 width=32 height=34 xoffset=0 yoffset=0 xadvance=34 page=0 chnl=0
-char id=52 x=136 y=0 width=32 height=34 xoffset=0 yoffset=0 xadvance=34 page=0 chnl=0
-char id=53 x=170 y=0 width=32 height=34 xoffset=0 yoffset=0 xadvance=34 page=0 chnl=0
-char id=54 x=204 y=0 width=32 height=34 xoffset=0 yoffset=0 xadvance=34 page=0 chnl=0
-char id=55 x=238 y=0 width=32 height=34 xoffset=0 yoffset=0 xadvance=34 page=0 chnl=0
-char id=56 x=272 y=0 width=32 height=34 xoffset=0 yoffset=0 xadvance=34 page=0 chnl=0
-char id=57 x=306 y=0 width=32 height=34 xoffset=0 yoffset=0 xadvance=34 page=0 chnl=0
-char id=58 x=340 y=0 width=32 height=34 xoffset=0 yoffset=0 xadvance=34 page=0 chnl=0
-char id=124 x=374 y=0 width=32 height=34 xoffset=0 yoffset=0 xadvance=34 page=0 chnl=0
-char id=46 x=408 y=0 width=32 height=34 xoffset=0 yoffset=0 xadvance=34 page=0 chnl=0
+char id=48 x=0 y=0 width=38 height=40 xoffset=0 yoffset=0 xadvance=38 page=0 chnl=0
+char id=49 x=40 y=0 width=38 height=40 xoffset=0 yoffset=0 xadvance=38 page=0 chnl=0
+char id=50 x=80 y=0 width=38 height=40 xoffset=0 yoffset=0 xadvance=38 page=0 chnl=0
+char id=51 x=120 y=0 width=38 height=40 xoffset=0 yoffset=0 xadvance=38 page=0 chnl=0
+char id=52 x=160 y=0 width=38 height=40 xoffset=0 yoffset=0 xadvance=38 page=0 chnl=0
+char id=53 x=200 y=0 width=38 height=40 xoffset=0 yoffset=0 xadvance=38 page=0 chnl=0
+char id=54 x=240 y=0 width=38 height=40 xoffset=0 yoffset=0 xadvance=38 page=0 chnl=0
+char id=55 x=280 y=0 width=38 height=40 xoffset=0 yoffset=0 xadvance=38 page=0 chnl=0
+char id=56 x=320 y=0 width=38 height=40 xoffset=0 yoffset=0 xadvance=38 page=0 chnl=0
+char id=57 x=360 y=0 width=38 height=40 xoffset=0 yoffset=0 xadvance=38 page=0 chnl=0
+char id=58 x=400 y=0 width=38 height=40 xoffset=0 yoffset=0 xadvance=38 page=0 chnl=0
+char id=124 x=440 y=0 width=38 height=40 xoffset=0 yoffset=0 xadvance=38 page=0 chnl=0
+char id=46 x=480 y=0 width=38 height=40 xoffset=0 yoffset=0 xadvance=38 page=0 chnl=0
