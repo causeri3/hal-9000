@@ -1,25 +1,7 @@
 import os
 from PIL import Image, ImageDraw, ImageFont
 
-# monospaced fonts
-font_path = "/Users/vanessacausemann/Downloads/erbos-draco-monospaced-nbp-font/ErbosDraco1StOpenNbpRegular-l5wX.ttf"
-font_path = "/Users/vanessacausemann/Downloads/de-valencia/De Valencia (beta).otf"
-
-font_path = "/Users/vanessacausemann/Downloads/telegrama/outline font/telegrama_render.otf"
-
-font_path = "/Users/vanessacausemann/Downloads/space-mono/SpaceMono-Regular.ttf"
-
-# too big
-font_path = "/Users/vanessacausemann/Downloads/axronic-font/Axronic-lxeDD.ttf"
-font_path = "/Users/vanessacausemann/Downloads/segment7-font/Segment7-4Gml.otf"
-font_path = "/Users/vanessacausemann/src/garmin/font_colours/LifeInSpace-MAVP.ttf"
-
-font_path = "/Users/vanessacausemann/Downloads/share-tech-mono.regular.ttf"
-
-
-font_path = "/Users/vanessacausemann/Downloads/space-mono/SpaceMono-Bold.ttf"
-
-
+font_path = "/Users/username/space-mono/SpaceMono-Bold.ttf"
 
 output_dir = "output_fonts"
 
