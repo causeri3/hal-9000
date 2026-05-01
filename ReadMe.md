@@ -3,7 +3,7 @@
 
 <table>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/805addd2-ff7c-4af6-9a2c-40bb43df8cc0" width="800"/></td>
+    <td><img src="https://github.com/user-attachments/assets/805addd2-ff7c-4af6-9a2c-40bb43df8cc0" width="500"/></td>
     <td><em>HAL 9000</em> from 2001: A Space Odyssey. Minimalistic Sci-Fi watch face with rounded writing. Completly operational and all circuits are functioning perfectly.
         HAL gets gets animated once your stress levels reach above 50%.</td>
   </tr>
