@@ -3,7 +3,7 @@
 
 <table>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/7c6ec408-9f7b-4fbd-93ba-6ed820a9935c" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/805addd2-ff7c-4af6-9a2c-40bb43df8cc0" width="200"/></td>
     <td><em>HAL 9000</em> from 2001: A Space Odyssey. Minimalistic Sci-Fi watch face with rounded writing. Completly operational and all circuits are functioning perfectly.
         HAL gets gets animated once your stress levels reach above 50%.</td>
   </tr>
@@ -11,10 +11,11 @@
 
 
 
----
-<img src="https://github.com/user-attachments/assets/c79612de-1ab9-46d0-bc3d-2fb17d6307dc" width="900"/>
 
-<img src="https://github.com/user-attachments/assets/339cca41-178c-4579-9ce1-dcf499dd237b" width="900"/>
+---
+<img src="https://github.com/user-attachments/assets/166517d9-1c4c-4871-ab6d-e0b241cfd13f" width="900"/>
+
+<img src="https://github.com/user-attachments/assets/bd1456e1-f7ce-407d-8cc3-c16841f8a3c6" width="900"/>
 
 
 
