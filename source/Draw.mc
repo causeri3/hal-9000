@@ -15,7 +15,6 @@ module Dimensions {
 
 class Fields{
     private var font_size; 
-    private var cy; 
     private var r; 
     private var angles; 
     private var fonts;
