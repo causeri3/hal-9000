@@ -347,7 +347,7 @@ function drawReflections(dc as Dc) as Void {
     dc.drawArc(Dimensions.cx,  Dimensions.cx, .5*Dimensions.width, Graphics.ARC_CLOCKWISE, 180, 360);
     // draw grey ring, for square watches
     dc.setPenWidth(Dimensions.width*.005);
-    dc.setColor(0xAAAAAA, Graphics.COLOR_TRANSPARENT);
+    dc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
     dc.drawArc(Dimensions.cx,  Dimensions.cx, .49*Dimensions.width, Graphics.ARC_COUNTER_CLOCKWISE, 360, 0);
 }
 
