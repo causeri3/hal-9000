@@ -145,7 +145,9 @@ class MenuDelegate extends WatchUi.Menu2InputDelegate {
      }
     else if (id.equals("animationSetting")) {                                                                        
        toggleAnimation(item);                                                                                         
-     }  
+     }
+    (Application.getApp() as hal9000App).analytics.trackSettings(Settings.getPropertiesAsDict());
+
   }
 
 //var validKeys as Null or Array<Number> = null;
