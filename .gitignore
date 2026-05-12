@@ -1,8 +1,8 @@
 bin/
 **/.DS_Store
 python-helpers/*
-!python-helpers/*.py
-!python-helpers/*.txt
-.aider*
+python-helpers/*.py
+python-helpers/*.txt
 screenshots/
-scratch
+.env
+supabase/.temp
