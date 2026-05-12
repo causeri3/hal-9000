@@ -68,4 +68,22 @@ module Settings {
         return (fieldString != null) ? fieldString : "";
     }
 
+    function getPropertiesAsDict() as Dictionary {
+        var keys = [
+            "Field1", "Field2", "Field3",
+            "Arc1", "Arc2", "Arc3",
+            "RefField", "stressThreshold", "caloriesGoal",
+            "stepsGoal", "animationSetting"
+        ];
+        var result = {} as Dictionary;
+        for (var i = 0; i < keys.size(); i++) {
+            var value = Application.Properties.getValue(keys[i]);
+            if (value != null) {
+                result[keys[i]] = value;
+            }
+        }
+        return result;
+    }
+
+
 }
